@@ -2,12 +2,28 @@
 
 牙科设备**挂网交易** + **自主上架** + **维修报修**三合一。旧医美内容整包保留、默认隐藏，可一键切回对比。
 
+## 🌐 在线演示（扫码即看）
+
+| | 地址 |
+| --- | --- |
+| **演示页** | https://zhaosirhi-cell.github.io/yayi/ |
+| **扫码页**（二维码放大展示） | https://zhaosirhi-cell.github.io/yayi/qr.html |
+| **仓库** | https://github.com/zhaosirhi-cell/yayi |
+
+![二维码](./qr.png)
+
 ```
 demo/          ✅ 效果演示（单文件 H5，双击就能点）
 miniprogram/   ⏳ 小程序工程（仍是旧医美版，待演示定稿后同步）
 prototype/     🎨 静态设计原型
 tools/         数据包 / 打包 / 自检脚本
 ```
+
+> ⚠️ 本机 `git push` 被网络阻断（github.com:443 连接重置），更新内容请用 API 方式推送：
+> ```bash
+> node tools/push-via-api.js zhaosirhi-cell yayi main
+> ```
+> 改完 `tools/demo/` 先 `node tools/build-demo.js` 重新打包，再执行上面的推送。
 
 ---
 

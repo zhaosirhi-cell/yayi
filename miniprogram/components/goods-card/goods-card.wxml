@@ -1,0 +1,47 @@
+<wxs module="f" src="../../wxs/format.wxs" />
+
+<!-- 瀑布流卡片 -->
+<view class="pcard" wx:if="{{mode === 'water'}}" bindtap="onTap" hover-class="card-hover">
+  <view class="pcard-media" style="height: {{imgH}}rpx;">
+    <image class="pcard-img" src="{{item.cover}}" mode="aspectFill" lazy-load />
+    <view class="ph-tag">{{item.tagText}}</view>
+    <view class="seal" wx:if="{{item.isPick}}">
+      <image class="seal-ic" src="/assets/icons/check-green.png" mode="aspectFit" />
+    </view>
+  </view>
+  <view class="pcard-body">
+    <view class="pcard-title">
+      <text class="pcard-em" wx:if="{{item.isPick}}">甄选</text>{{item.title}}
+    </view>
+    <view class="pcard-sub">{{f.sub(item)}}</view>
+    <view class="pcard-foot">
+      <view class="pcard-link">
+        查看
+        <image class="pcard-link-ic" src="/assets/icons/arrow-green.png" mode="aspectFit" />
+      </view>
+      <view class="mini-btn" catchtap="onConsult">立即咨询</view>
+    </view>
+  </view>
+</view>
+
+<!-- 列表大卡 -->
+<view class="lcard" wx:else bindtap="onTap" hover-class="card-hover">
+  <view class="lcard-media">
+    <image class="lcard-img" src="{{item.cover}}" mode="aspectFill" lazy-load />
+    <view class="ph-tag">{{item.tagText}}</view>
+  </view>
+  <view class="lcard-main">
+    <view class="lcard-title">{{item.title}}</view>
+    <view class="lcard-sub">{{f.sub(item)}} · {{item.city}}</view>
+    <view class="lcard-tags">
+      <text class="lcard-tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="lcard-foot">
+      <view class="lcard-price">
+        <text class="price-num">{{f.priceNum(item.price)}}</text>
+        <text class="price-unit">{{f.priceUnit(item.price)}}</text>
+      </view>
+      <view class="mini-btn" catchtap="onConsult">立即咨询</view>
+    </view>
+  </view>
+</view>

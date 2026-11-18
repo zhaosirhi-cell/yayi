@@ -1,0 +1,74 @@
+<view class="page-tab">
+
+  <!-- 弧形头图 -->
+  <view class="mine-hero">
+    <nav-bar title="我的" theme="dark" />
+    <view class="mine-tools" bindtap="onTapTip" data-tip="设置">
+      <image class="mine-gear" src="/assets/icons/gear-dark.png" mode="aspectFit" />
+    </view>
+    <view class="mine-user" bindtap="onLogin">
+      <view class="mine-avatar">
+        <image class="mine-avatar-ic" src="/assets/icons/userFill-white.png" mode="aspectFit" />
+      </view>
+      <text class="mine-name">{{userInfo ? userInfo.nickName : '授权登录'}}</text>
+      <text class="mine-sub" wx:if="{{userInfo}}">{{userInfo.phone}} · 未实名</text>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-card">
+    <view class="quick-item" bindtap="onTapTip" data-tip="关注产品">关注产品</view>
+    <view class="quick-item" bindtap="onTapTip" data-tip="浏览历史">浏览历史</view>
+    <view class="quick-item" bindtap="onTapTip" data-tip="帮助中心">帮助中心</view>
+  </view>
+
+  <!-- 我的交易 -->
+  <view class="block">
+    <view class="block-title">我的交易</view>
+    <view class="trade-row">
+      <view class="trade-item" bindtap="onTapTip" data-tip="我买到的">
+        <view class="ic-round t-buy">
+          <image class="ic-round-ic" src="/assets/icons/cart-white.png" mode="aspectFit" />
+        </view>
+        <view class="trade-txt">
+          <text class="trade-name">我买到的</text>
+          <text class="trade-sub">点击查看已采购订单</text>
+        </view>
+      </view>
+      <view class="trade-item" bindtap="onTapTip" data-tip="我卖出的">
+        <view class="ic-round t-sell">
+          <image class="ic-round-ic" src="/assets/icons/bars-white.png" mode="aspectFit" />
+        </view>
+        <view class="trade-txt">
+          <text class="trade-name">我卖出的</text>
+          <text class="trade-sub">点击查看发布订单</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的功能 -->
+  <view class="block">
+    <view class="block-title">我的功能</view>
+    <view class="func-grid">
+      <view class="func-item" bindtap="goEstimate">
+        <image class="func-ic" src="/assets/icons/edit-dark.png" mode="aspectFit" />
+        <text class="func-name">我的估价</text>
+      </view>
+      <view class="func-item" bindtap="onTapTip" data-tip="我的发布">
+        <image class="func-ic" src="/assets/icons/tag-dark.png" mode="aspectFit" />
+        <text class="func-name">我的发布</text>
+      </view>
+      <view class="func-item" bindtap="onTapTip" data-tip="实名认证">
+        <image class="func-ic" src="/assets/icons/shield-dark.png" mode="aspectFit" />
+        <text class="func-name">实名认证</text>
+      </view>
+      <view class="func-item" bindtap="onTapTip" data-tip="联系客服">
+        <image class="func-ic" src="/assets/icons/chat-dark.png" mode="aspectFit" />
+        <text class="func-name">联系客服</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="version">再美二手光电 v1.0.0</view>
+</view>

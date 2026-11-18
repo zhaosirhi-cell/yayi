@@ -1,0 +1,31 @@
+/**
+ * 价格格式化（WXS，供 WXML 直接使用）
+ */
+function priceNum (price) {
+  if (price === null || price === undefined) return '面议'
+  if (price >= 10000) {
+    var w = price / 10000
+    var v = Math.round(w * 10) / 10
+    return '¥' + v
+  }
+  return '¥' + price
+}
+
+function priceUnit (price) {
+  if (price === null || price === undefined) return ''
+  return price >= 10000 ? '万' : '元'
+}
+
+function sub (item) {
+  var parts = []
+  if (item.categoryName) parts.push(item.categoryName)
+  if (item.condition) parts.push(item.condition)
+  if (item.year) parts.push(item.year + '年')
+  return parts.join(' · ')
+}
+
+module.exports = {
+  priceNum: priceNum,
+  priceUnit: priceUnit,
+  sub: sub
+}

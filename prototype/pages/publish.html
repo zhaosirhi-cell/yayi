@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我要卖机 · 发布设备</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+  .p-top {
+    background: linear-gradient(160deg, #F4FAE2 0%, #DCEFB8 58%, #AFDD96 100%);
+    padding-top: 46px;
+    position: relative;
+  }
+  .p-nav {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 14px;
+    position: relative;
+  }
+  .p-nav .back { color: #24312A; }
+  .p-nav .back .ic { width: 20px; height: 20px; stroke-width: 2.2; }
+  .p-nav h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    font-weight: 700;
+    color: #1E3325;
+    white-space: nowrap;
+  }
+  .p-nav .draft { margin-left: auto; font-size: 12px; color: #3F5B47; }
+
+  /* 步骤条 */
+  .steps {
+    display: flex;
+    align-items: center;
+    padding: 6px 26px 16px;
+  }
+  .steps .st {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .steps .st i {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .75);
+    color: #4C7A56;
+    font-style: normal;
+    font-size: 11px;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+  }
+  .steps .st span { font-size: 10.5px; color: #4C7A56; }
+  .steps .st.on i { background: #1E3325; color: #fff; }
+  .steps .st.on span { color: #1E3325; font-weight: 700; }
+  .steps .ln {
+    flex: 1;
+    height: 1.5px;
+    background: rgba(30, 51, 37, .16);
+    margin: 0 6px 16px;
+  }
+
+  /* 卡片表单 */
+  .f-card {
+    margin: 12px 14px 0;
+    background: #fff;
+    border-radius: var(--r-m);
+    box-shadow: var(--sh-card);
+    overflow: hidden;
+  }
+  .f-card .c-title {
+    padding: 13px 13px 4px;
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .f-card .c-title::before {
+    content: '';
+    width: 3px; height: 13px;
+    border-radius: 2px;
+    background: linear-gradient(#8FD08A, #4FB877);
+  }
+  .f-card .c-title small { font-weight: 400; font-size: 11px; color: var(--gray); }
+
+  .upload { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; padding: 12px 13px 14px; }
+  .upload .u-item {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    background: linear-gradient(150deg, #EAF0F5, #DCE6EE);
+    display: grid;
+    place-items: center;
+    color: #AFBCC8;
+  }
+  .upload .u-item .ic { width: 22px; height: 22px; }
+  .upload .u-item .del {
+    position: absolute;
+    right: -5px; top: -5px;
+    width: 17px; height: 17px;
+    border-radius: 50%;
+    background: rgba(20, 23, 26, .62);
+    color: #fff;
+    display: grid; place-items: center;
+  }
+  .upload .u-item .del .ic { width: 9px; height: 9px; stroke-width: 3; }
+  .upload .u-add {
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    border: 1px dashed var(--gray-3);
+    background: #FAFBFC;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--gray);
+    font-size: 10.5px;
+  }
+  .upload .u-add .ic { width: 22px; height: 22px; stroke-width: 1.4; }
+
+  .f-row {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 13px;
+    border-top: 1px solid var(--line);
+    font-size: 13.5px;
+  }
+  .f-card .f-row:first-of-type { border-top: 0; }
+  .f-row label { width: 78px; flex: 0 0 auto; color: #2B2F34; }
+  .f-row label em { font-style: normal; color: #F2555A; margin-right: 2px; }
+  .f-row .val { flex: 1; color: #1B1E22; }
+  .f-row .val.ph { color: var(--gray-2); }
+  .f-row .unit { font-size: 12px; color: var(--gray); margin-left: 4px; }
+  .f-row .ic { width: 13px; height: 13px; color: var(--gray-2); flex: 0 0 auto; }
+  .f-row input { flex: 1; font-size: 13.5px; }
+  .f-row input::placeholder { color: var(--gray-2); }
+
+  .f-tip {
+    margin: 12px 14px 0;
+    font-size: 11px;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+  .f-tip b { color: var(--green-700); font-weight: 600; }
+
+  /* 底部提交 */
+  .p-actions {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 70px;
+    background: #fff;
+    box-shadow: 0 -2px 14px rgba(23, 43, 29, .09);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px 10px;
+    z-index: 20;
+  }
+  .p-actions .btn-save {
+    width: 108px;
+    height: 42px;
+    border-radius: 21px;
+    border: 1.5px solid var(--green-300);
+    color: var(--green-700);
+    font-size: 14px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+  }
+  .p-actions .btn-submit {
+    flex: 1;
+    height: 42px;
+    border-radius: 21px;
+    background: linear-gradient(120deg, #A8DA8A, #4FB877);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 14px rgba(79, 184, 119, .32);
+  }
+</style>
+</head>
+<body class="page">
+<div class="phone">
+  <div class="screen" style="padding-bottom:82px">
+
+    <div class="p-top">
+      <div class="capsule" data-capsule></div>
+      <div class="p-nav">
+        <a class="back" href="home.html"><svg class="ic"><use href="#i-back"/></svg></a>
+        <h1>发布设备</h1>
+        <a class="draft" href="javascript:void(0)">草稿箱</a>
+      </div>
+      <div class="steps">
+        <div class="st on"><i>1</i><span>上传图片</span></div>
+        <div class="ln"></div>
+        <div class="st"><i>2</i><span>填写信息</span></div>
+        <div class="ln"></div>
+        <div class="st"><i>3</i><span>提交审核</span></div>
+      </div>
+    </div>
+
+    <!-- 图片 -->
+    <section class="f-card">
+      <div class="c-title">设备图片 <small>最多 9 张，建议首图为整机正面</small></div>
+      <div class="upload">
+        <div class="u-item">
+          <svg class="ic"><use href="#i-camera"/></svg>
+          <span class="del"><svg class="ic"><use href="#i-close"/></svg></span>
+        </div>
+        <div class="u-item"><svg class="ic"><use href="#i-camera"/></svg><span class="del"><svg class="ic"><use href="#i-close"/></svg></span></div>
+        <div class="u-add">
+          <svg class="ic"><use href="#i-plus"/></svg>
+          <span>2/9</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 基本信息 -->
+    <section class="f-card">
+      <div class="c-title">基本信息</div>
+      <div class="f-row"><label><em>*</em>设备名称</label><input type="text" placeholder="如：科医人 M22 超光子"></div>
+      <div class="f-row"><label><em>*</em>设备分类</label><span class="val">激光设备</span><svg class="ic"><use href="#i-arrow"/></svg></div>
+      <div class="f-row"><label><em>*</em>品牌</label><span class="val">科医人 Lumenis</span><svg class="ic"><use href="#i-arrow"/></svg></div>
+      <div class="f-row"><label>型号</label><input type="text" placeholder="如：M22 王者之心"></div>
+      <div class="f-row"><label><em>*</em>成色</label><span class="val">9 成新</span><svg class="ic"><use href="#i-arrow"/></svg></div>
+      <div class="f-row"><label><em>*</em>出厂年份</label><span class="val">2022 年</span><svg class="ic"><use href="#i-arrow"/></svg></div>
+    </section>
+
+    <!-- 价格与归属 -->
+    <section class="f-card">
+      <div class="c-title">价格与归属</div>
+      <div class="f-row">
+        <label><em>*</em>期望售价</label>
+        <input type="text" placeholder="请输入金额">
+        <span class="unit">万元</span>
+      </div>
+      <div class="f-row"><label>是否可议价</label><span class="val">可议价</span><svg class="ic"><use href="#i-arrow"/></svg></div>
+      <div class="f-row"><label><em>*</em>所在城市</label><span class="val">上海 · 浦东新区</span><svg class="ic"><use href="#i-arrow"/></svg></div>
+      <div class="f-row"><label><em>*</em>联系人</label><input type="text" placeholder="请输入您的称呼"></div>
+      <div class="f-row"><label><em>*</em>手机号</label><input type="text" placeholder="用于买家与您联系"></div>
+    </section>
+
+    <p class="f-tip">
+      · 提交后平台将在 <b>1 个工作日内</b>完成审核，审核通过后展示在“最新发布”<br>
+      · 支持 <b>免费估价</b>：不确定价格可先让平台给出参考区间
+    </p>
+  </div>
+
+  <div class="p-actions">
+    <a class="btn-save" href="javascript:void(0)">存草稿</a>
+    <a class="btn-submit" href="javascript:void(0)">提交审核</a>
+    <div class="home-indicator"></div>
+  </div>
+</div>
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

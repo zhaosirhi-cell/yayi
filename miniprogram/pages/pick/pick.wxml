@@ -1,0 +1,79 @@
+<view class="page-tab">
+
+  <view class="hero hero-soft">
+    <nav-bar title="再美二手光电" theme="dark" />
+    <view class="search-row">
+      <view class="city">
+        <text class="city-txt">{{city}}</text>
+      </view>
+      <view class="search-pill" bindtap="goSearch">
+        <text class="search-pill-txt">搜索设备 / 品牌 / 型号</text>
+        <view class="search-go">
+          <image class="ic" src="/assets/icons/search-white.png" mode="aspectFit" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 甄选 Banner -->
+    <view class="pick-banner">
+      <view class="pb-tag">二手医美设备买卖平台</view>
+      <view class="pb-title">再美甄选 · 无忧购</view>
+      <view class="pb-en">WORRY FREE SHOPPING</view>
+      <view class="pb-sub">
+        <text class="pb-sub-item">放心 · 省心 · 安心</text>
+        <text class="pb-sub-item">REST ASSURED</text>
+      </view>
+      <view class="pb-phone">
+        <view class="pb-screen">再美</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选 -->
+  <view class="chips">
+    <view class="chip {{sortKey === 'distance' ? 'on' : ''}}" bindtap="onSortDistance">距离最近</view>
+    <picker class="chip-picker" mode="selector" range="{{brands}}" value="{{brandIndex}}" bindchange="onBrandChange">
+      <view class="chip {{brandIndex > 0 ? 'on' : ''}}">
+        {{brandIndex > 0 ? brands[brandIndex] : '品牌'}}
+        <image class="ic" src="/assets/icons/caret-dark.png" mode="aspectFit" />
+      </view>
+    </picker>
+    <picker class="chip-picker" mode="selector" range="{{priceRanges}}" value="{{priceIndex}}" bindchange="onPriceChange">
+      <view class="chip {{priceIndex > 0 ? 'on' : ''}}">
+        {{priceIndex > 0 ? priceRanges[priceIndex] : '价格'}}
+        <image class="ic" src="/assets/icons/caret-dark.png" mode="aspectFit" />
+      </view>
+    </picker>
+    <picker class="chip-picker" mode="selector" range="{{years}}" value="{{yearIndex}}" bindchange="onYearChange">
+      <view class="chip {{yearIndex > 0 ? 'on' : ''}}">
+        {{yearIndex > 0 ? years[yearIndex] : '年份'}}
+        <image class="ic" src="/assets/icons/caret-dark.png" mode="aspectFit" />
+      </view>
+    </picker>
+  </view>
+
+  <view class="pick-note">
+    <image class="pick-note-ic" src="/assets/icons/shield-green.png" mode="aspectFit" />
+    <text>甄选好机：平台质检 · 出报告 · 支持无忧购</text>
+  </view>
+
+  <view class="waterfall">
+    <view class="wf-col">
+      <goods-card class="wf-item" wx:for="{{colA}}" wx:key="id" item="{{item}}" imgH="{{item.h}}" mode="water" />
+    </view>
+    <view class="wf-col">
+      <goods-card class="wf-item" wx:for="{{colB}}" wx:key="id" item="{{item}}" imgH="{{item.h}}" mode="water" />
+    </view>
+  </view>
+
+  <view class="loading-tip" wx:if="{{loading}}">正在加载…</view>
+  <view class="list-end" wx:elif="{{!colA.length}}">没有符合条件的甄选设备</view>
+  <view class="list-end" wx:else>— 已加载全部甄选设备 —</view>
+</view>
+
+<view class="consult" bindtap="onConsult">
+  <view class="consult-av">
+    <image class="consult-ic" src="/assets/icons/chat-dark.png" mode="aspectFit" />
+  </view>
+  <view class="consult-tx">在线咨询</view>
+</view>

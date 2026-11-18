@@ -1,0 +1,70 @@
+<view class="page-normal">
+
+  <!-- 搜索头 -->
+  <view class="s-head">
+    <view class="s-row">
+      <view class="s-back" bindtap="onBack">
+        <image class="s-back-ic" src="/assets/icons/back-dark.png" mode="aspectFit" />
+      </view>
+      <view class="s-input">
+        <image class="s-input-ic" src="/assets/icons/search-dark.png" mode="aspectFit" />
+        <input
+          class="s-input-el"
+          value="{{keyword}}"
+          placeholder="M22 超光子"
+          placeholder-class="s-ph"
+          confirm-type="search"
+          focus="{{true}}"
+          bindinput="onInput"
+          bindconfirm="onSearchTap"
+        />
+        <view class="s-clear" wx:if="{{keyword}}" bindtap="onClear">
+          <image class="s-clear-ic" src="/assets/icons/close-white.png" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="s-cancel" bindtap="onSearchTap">搜索</view>
+    </view>
+  </view>
+
+  <!-- 默认面板 -->
+  <block wx:if="{{!searched}}">
+    <view class="s-block" wx:if="{{history.length}}">
+      <view class="s-title">
+        <text>历史搜索</text>
+        <image class="s-title-ic" src="/assets/icons/close-gray.png" mode="aspectFit" bindtap="onClearHistory" />
+      </view>
+      <view class="tags">
+        <view class="tag" wx:for="{{history}}" wx:key="*this" data-kw="{{item}}" bindtap="onHistoryTap">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="s-block">
+      <view class="s-title"><text>热门搜索</text></view>
+      <view class="tags">
+        <view class="tag hot" wx:for="{{hot}}" wx:key="*this" data-kw="{{item}}" bindtap="onHotTap">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="s-block">
+      <view class="s-title"><text>大家都在找</text></view>
+      <view class="rank">
+        <view class="rank-item" wx:for="{{rank}}" wx:key="name" data-kw="{{item.name}}" bindtap="onHotTap">
+          <text class="rank-no rank-no-{{index + 1}}">{{index + 1}}</text>
+          <text class="rank-name">{{item.name}}</text>
+          <text class="rank-cnt">{{item.count}} 人查看</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 搜索结果 -->
+  <block wx:else>
+    <view class="result-line">
+      <text>“{{keyword}}” 的搜索结果</text>
+      <text class="result-count">共 {{list.length}} 台</text>
+    </view>
+    <goods-card wx:for="{{list}}" wx:key="id" item="{{item}}" mode="row" />
+    <view class="list-end" wx:if="{{loading}}">正在搜索…</view>
+    <view class="empty" wx:elif="{{!list.length}}">没有找到相关设备，换个关键词试试</view>
+  </block>
+</view>

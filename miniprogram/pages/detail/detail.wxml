@@ -1,0 +1,111 @@
+<wxs module="f" src="../../wxs/format.wxs" />
+
+<view class="page-detail" wx:if="{{detail}}">
+
+  <!-- 主图 -->
+  <view class="d-media">
+    <swiper class="d-swiper" circular bindchange="onSwiperChange">
+      <swiper-item wx:for="{{detail.images}}" wx:key="*this">
+        <image class="d-img" src="{{item}}" mode="aspectFill" data-url="{{item}}" bindtap="previewImage" />
+      </swiper-item>
+    </swiper>
+    <view class="d-nav">
+      <nav-bar back="{{true}}" theme="light" />
+    </view>
+    <view class="d-count">{{current + 1}} / {{detail.images.length}}</view>
+  </view>
+
+  <!-- 价格与标题 -->
+  <view class="d-head">
+    <view class="d-price">
+      <text class="d-price-num">{{f.priceNum(detail.price)}}</text>
+      <text class="d-price-unit">{{f.priceUnit(detail.price)}}</text>
+      <text class="d-negotiable" wx:if="{{detail.negotiable}}">支持议价</text>
+    </view>
+    <view class="d-title">{{detail.title}}</view>
+    <view class="d-tags">
+      <text class="d-tag g">{{detail.condition}}</text>
+      <text class="d-tag g">{{detail.year}} 年</text>
+      <text class="d-tag">{{detail.city}} · {{detail.district}}</text>
+      <text class="d-tag" wx:for="{{detail.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 平台保障 -->
+  <view class="d-guarantee">
+    <view class="dg-item">
+      <image class="dg-ic" src="/assets/icons/shield-green.png" mode="aspectFit" />
+      <text>平台核验</text>
+    </view>
+    <view class="dg-item">
+      <image class="dg-ic" src="/assets/icons/check-green.png" mode="aspectFit" />
+      <text>出质检报告</text>
+    </view>
+    <view class="dg-item">
+      <image class="dg-ic" src="/assets/icons/chat-green.png" mode="aspectFit" />
+      <text>可上门看机</text>
+    </view>
+  </view>
+
+  <!-- 设备参数 -->
+  <view class="d-card">
+    <view class="d-card-title">设备参数</view>
+    <view class="spec">
+      <view class="spec-item" wx:for="{{specs}}" wx:key="k">
+        <text class="spec-k">{{item.k}}</text>
+        <text class="spec-v">{{item.v}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 卖家 -->
+  <view class="d-card">
+    <view class="d-card-title">卖家信息</view>
+    <view class="seller">
+      <view class="seller-logo">再美</view>
+      <view class="seller-main">
+        <view class="seller-name">
+          {{detail.seller.name}}
+          <text class="seller-badge" wx:if="{{detail.seller.verified}}">已认证</text>
+        </view>
+        <view class="seller-sub">在售设备 {{detail.seller.count}} 台 · 好评率 {{detail.seller.rate}}</view>
+      </view>
+      <view class="seller-btn" bindtap="onConsult">进店逛逛</view>
+    </view>
+  </view>
+
+  <!-- 描述 -->
+  <view class="d-card">
+    <view class="d-card-title">设备描述</view>
+    <view class="desc">
+      <text class="desc-p" wx:for="{{detail.desc}}" wx:key="*this">{{item}}</text>
+      <text class="desc-note">平台仅提供信息展示，交易前请自行核验设备资质与合规性。</text>
+    </view>
+  </view>
+
+  <!-- 相似设备 -->
+  <view class="sec-head" wx:if="{{related.length}}">
+    <text class="sec-head-title">相似设备</text>
+  </view>
+  <view class="rel">
+    <view class="rel-item" wx:for="{{related}}" wx:key="id">
+      <goods-card item="{{item}}" imgH="{{224}}" mode="water" />
+    </view>
+  </view>
+</view>
+
+<view class="d-loading" wx:else>加载中…</view>
+
+<!-- 底部操作栏 -->
+<view class="d-actions">
+  <view class="d-op {{favorite ? 'on' : ''}}" bindtap="onFav">
+    <image class="d-op-ic" src="/assets/icons/{{favorite ? 'star-green' : 'star-dark'}}.png" mode="aspectFit" />
+    <text class="d-op-tx">{{favorite ? '已收藏' : '收藏'}}</text>
+  </view>
+  <view class="d-op" bindtap="onCall">
+    <image class="d-op-ic" src="/assets/icons/chat-dark.png" mode="aspectFit" />
+    <text class="d-op-tx">电话</text>
+  </view>
+  <view class="d-btn-ghost" bindtap="onCall">立即致电</view>
+  <view class="d-btn-solid" bindtap="onConsult">立即咨询</view>
+</view>

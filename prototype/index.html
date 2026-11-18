@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>再美二手光电 · 小程序原型总览</title>
+<style>
+  :root {
+    --ink: #15171A;
+    --ink-3: #6C727B;
+    --gray: #8C929B;
+    --line: #E8EBEF;
+    --green: #2B7A4B;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #EFF1F4;
+    color: var(--ink);
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* 顶部 */
+  .top {
+    background:
+      radial-gradient(90% 120% at 6% 0%, #F7FBE4 0%, rgba(247, 251, 228, 0) 58%),
+      linear-gradient(150deg, #F2F8DC 0%, #D9EDB2 34%, #A9DA92 64%, #6FC288 100%);
+    padding: 34px 40px 30px;
+  }
+  .top h1 { margin: 0; font-size: 27px; letter-spacing: -.5px; }
+  .top h1 span { font-weight: 400; font-size: 15px; color: #33513C; margin-left: 10px; letter-spacing: 1px; }
+  .top p { margin: 10px 0 0; font-size: 13px; color: #35543E; line-height: 1.75; max-width: 880px; }
+  .top .badges { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .top .badges span {
+    font-size: 12px;
+    padding: 5px 11px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, .72);
+    color: #2C4634;
+  }
+
+  /* 区块 */
+  .sec { padding: 30px 40px 0; }
+  .sec > h2 {
+    font-size: 16px;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sec > h2::before {
+    content: '';
+    width: 4px; height: 15px;
+    border-radius: 2px;
+    background: linear-gradient(#8FD08A, #4FB877);
+  }
+  .sec > h2 small { font-weight: 400; font-size: 12px; color: var(--gray); }
+
+  /* 页面画廊 */
+  .gallery {
+    display: flex;
+    gap: 22px;
+    overflow-x: auto;
+    padding: 4px 40px 22px;
+    scroll-snap-type: x mandatory;
+  }
+  .gallery::-webkit-scrollbar { height: 8px; }
+  .gallery::-webkit-scrollbar-thumb { background: #CDD3DA; border-radius: 4px; }
+  .g-item { flex: 0 0 auto; scroll-snap-align: start; }
+  .g-item .frame {
+    width: 415px;
+    height: 852px;
+    border-radius: 34px;
+    overflow: hidden;
+    border: 0;
+    box-shadow: 0 14px 40px rgba(21, 40, 28, .16);
+    background: #fff;
+    display: block;
+  }
+  .g-cap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 4px 0;
+  }
+  .g-cap b { font-size: 14px; }
+  .g-cap i {
+    font-style: normal;
+    font-size: 11px;
+    color: var(--green);
+    background: #E7F3DA;
+    padding: 2px 7px;
+    border-radius: 8px;
+  }
+  .g-cap a {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--gray);
+    border-bottom: 1px dashed #C6CCD3;
+  }
+  .g-cap a:hover { color: var(--green); }
+
+  /* 设计令牌 */
+  .token-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 10px rgba(23, 43, 29, .06);
+  }
+  .card h3 { margin: 0 0 14px; font-size: 14px; }
+  .swatches { display: flex; flex-wrap: wrap; gap: 12px; }
+  .sw { width: 72px; }
+  .sw i {
+    display: block;
+    height: 42px;
+    border-radius: 9px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .05);
+  }
+  .sw span { display: block; font-size: 10.5px; color: var(--gray); margin-top: 5px; line-height: 1.4; }
+  .sw b { font-size: 10.5px; font-weight: 600; display: block; }
+  .grad {
+    height: 46px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .05);
+  }
+  .kv { font-size: 12.5px; color: var(--ink-3); line-height: 2.05; }
+  .kv b { color: var(--ink); font-weight: 600; }
+  .kv code {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    background: #F4F6F8;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: #33513C;
+  }
+
+  /* 映射表 */
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--gray); font-weight: 500; font-size: 11.5px; }
+  td code {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    color: #2B7A4B;
+    background: #F2F8EA;
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .foot {
+    padding: 34px 40px 46px;
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>再美二手光电 <span>小程序原型 · v1</span></h1>
+  <p>
+    二手医美设备挂网信息平台 + 交易撮合。所有页面按小程序规范以 375 × 812（= 750rpx 屏宽）设计，
+    颜色 / 圆角 / 间距 / 字号全部使用统一令牌，可直接映射为 WXSS 的 rpx 数值。
+    下方 8 个页面为可交互 HTML 原型，逻辑与小程序「页面 + 组件」一一对应。
+  </p>
+  <div class="badges">
+    <span>设计基准 750rpx</span>
+    <span>自定义导航栏（沉浸式渐变头）</span>
+    <span>自定义 tabBar（中间凸起发布）</span>
+    <span>主题色 #2B7A4B</span>
+    <span>8 个页面 + 6 个复用组件</span>
+  </div>
+</header>
+
+<section class="sec" style="padding-bottom:6px">
+  <h2>页面画廊 <small>左右滑动查看，点击「独立打开」可单独预览</small></h2>
+</section>
+
+<div class="gallery">
+  <div class="g-item">
+    <iframe class="frame" src="pages/home.html" title="首页"></iframe>
+    <div class="g-cap"><b>01 首页</b><i>tab</i><span style="font-size:11.5px;color:#8C929B">搜索 + 六宫格 + 瀑布流</span><a href="pages/home.html" target="_blank">独立打开</a></div>
+  </div>
+  <div class="g-item">
+    <iframe class="frame" src="pages/pick.html" title="再美甄选"></iframe>
+    <div class="g-cap"><b>02 再美甄选</b><i>tab</i><span style="font-size:11.5px;color:#8C929B">质检好机 + 多条件筛选</span><a href="pages/pick.html" target="_blank">独立打开</a></div>
+  </div>
+  <div class="g-item">
+    <iframe class="frame" src="pages/list.html" title="二手设备列表"></iframe>
+    <div class="g-cap"><b>03 设备列表</b><i>二级页</i><span style="font-size:11.5px;color:#8C929B">分类 + 排序 + 大卡片</span><a href="pages/list.html" target="_blank">独立打开</a></div>
+  </div>
+  <div class="g-item">
+    <iframe class="frame" src="pages/detail.html" title="设备详情"></iframe>
+    <div class="g-cap"><b>04 设备详情</b><i>二级页</i><span style="font-size:11.5px;color:#8C929B">主图 + 参数 + 卖家 + 咨询</span><a href="pages/detail.html" target="_blank">独立打开</a></div>
+  </div>
+  <div class="g-item">
+    <iframe class="frame" src="pages/publish.html" title="我要卖机"></iframe>
+    <div class="g-cap"><b>05 我要卖机</b><i>二级页</i><span style="font-size:11.5px;color:#8C929B">三步发布表单</span><a href="pages/publish.html" target="_blank">独立打开</a></div>
+  </div>
+  <div class="g-item">
+    <iframe class="frame" src="pages/search.html" title="搜索"></iframe>
+    <div class="g-cap"><b>06 搜索</b><i>二级页</i><span style="font-size:11.5px;color:#8C929B">历史 + 热搜 + 榜单</span><a href="pages/search.html" target="_blank">独立打开</a></div>
+  </div>
+  <div class="g-item">
+    <iframe class="frame" src="pages/news.html" title="资讯"></iframe>
+    <div class="g-cap"><b>07 资讯</b><i>tab</i><span style="font-size:11.5px;color:#8C929B">医美周报 / 公司新闻</span><a href="pages/news.html" target="_blank">独立打开</a></div>
+  </div>
+  <div class="g-item">
+    <iframe class="frame" src="pages/mine.html" title="我的"></iframe>
+    <div class="g-cap"><b>08 我的</b><i>tab</i><span style="font-size:11.5px;color:#8C929B">授权登录 + 交易 + 功能</span><a href="pages/mine.html" target="_blank">独立打开</a></div>
+  </div>
+</div>
+
+<section class="sec">
+  <h2>设计令牌 <small>1px = 2rpx，按 750rpx 设计稿取双数即可</small></h2>
+  <div class="token-wrap">
+
+    <div class="card">
+      <h3>品牌渐变（顶部沉浸头 / 主按钮）</h3>
+      <div class="grad" style="background:linear-gradient(160deg,#F2F8DC 0%,#D5EBAE 32%,#9FD58B 66%,#58BE85 100%)"></div>
+      <div class="grad" style="background:linear-gradient(120deg,#A8DA8A,#4FB877)"></div>
+      <div class="kv">
+        头部：<code>160deg</code> #F2F8DC → #D5EBAE → #9FD58B → #58BE85<br>
+        主按钮：<code>120deg</code> #A8DA8A → #4FB877
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>主色 / 中性色</h3>
+      <div class="swatches">
+        <div class="sw"><i style="background:#2B7A4B"></i><b>#2B7A4B</b><span>主绿·文字/图标</span></div>
+        <div class="sw"><i style="background:#4FB877"></i><b>#4FB877</b><span>按钮终点</span></div>
+        <div class="sw"><i style="background:#8FD08A"></i><b>#8FD08A</b><span>高光绿</span></div>
+        <div class="sw"><i style="background:#DFF0C4"></i><b>#DFF0C4</b><span>选中态底色</span></div>
+        <div class="sw"><i style="background:#EFF7DC"></i><b>#EFF7DC</b><span>浅绿提示底</span></div>
+        <div class="sw"><i style="background:#15171A"></i><b>#15171A</b><span>主文字</span></div>
+        <div class="sw"><i style="background:#6C727B"></i><b>#6C727B</b><span>次文字</span></div>
+        <div class="sw"><i style="background:#8C929B"></i><b>#8C929B</b><span>辅助/时间</span></div>
+        <div class="sw"><i style="background:#F6F7F9"></i><b>#F6F7F9</b><span>页面底色</span></div>
+        <div class="sw"><i style="background:#F2555A"></i><b>#F2555A</b><span>价格红</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>六宫格功能色</h3>
+      <div class="swatches">
+        <div class="sw"><i style="background:linear-gradient(140deg,#FFB0B8,#F0579A)"></i><b>二手设备</b><span>粉红</span></div>
+        <div class="sw"><i style="background:linear-gradient(140deg,#9FA0FF,#6667F0)"></i><b>机构转让</b><span>紫蓝</span></div>
+        <div class="sw"><i style="background:linear-gradient(140deg,#7BE9D2,#2CCFB2)"></i><b>维修保养</b><span>青绿</span></div>
+        <div class="sw"><i style="background:linear-gradient(140deg,#9FB0FF,#6E63F0)"></i><b>再美甄选</b><span>蓝紫</span></div>
+        <div class="sw"><i style="background:linear-gradient(140deg,#FFC46B,#FF7E5F)"></i><b>我要卖机</b><span>橙红</span></div>
+        <div class="sw"><i style="background:linear-gradient(140deg,#FFA3D5,#FF6AA8)"></i><b>免费估价</b><span>玫红</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>字号 / 圆角 / 间距</h3>
+      <div class="kv">
+        价格 <b>48rpx（24px）</b>· 页面标题 <b>34rpx</b> · 卡片标题 <b>30rpx</b><br>
+        正文 <b>26rpx</b> · 辅助 <b>23rpx</b> · 标签 <b>20rpx</b><br>
+        圆角：卡片 <b>24rpx</b> · 大卡/宫格 <b>36rpx</b> · 搜索框 <b>36rpx(全圆)｜</b>按钮 <b>全圆</b><br>
+        左右留白 <b>28rpx</b> · 卡片间距 <b>20rpx</b> · 区块间距 <b>24rpx</b><br>
+        tabBar 高 <b>148rpx</b> · 中间凸起按钮 <b>112rpx</b>（上浮 34rpx）
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="sec">
+  <h2>原型 → 小程序 页面映射</h2>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr><th style="width:150px">原型文件</th><th style="width:230px">小程序页面</th><th>关键组件</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>pages/home.html</td><td><code>pages/index/index</code></td><td>search-bar、banner-swiper、cat-grid、goods-card、custom-tab-bar</td></tr>
+        <tr><td>pages/pick.html</td><td><code>pages/pick/pick</code></td><td>filter-chips（品牌/价格/年份下拉）、goods-card + 甄选角标</td></tr>
+        <tr><td>pages/list.html</td><td><code>pages/list/list</code></td><td>sort-bar、category-chips、goods-row（大卡）、load-more</td></tr>
+        <tr><td>pages/detail.html</td><td><code>pages/detail/detail</code></td><td>image-swiper、price-block、spec-table、seller-card、action-bar</td></tr>
+        <tr><td>pages/publish.html</td><td><code>pages/publish/publish</code></td><td>steps、image-uploader、form-row（picker/input）、submit-bar</td></tr>
+        <tr><td>pages/search.html</td><td><code>pages/search/search</code></td><td>search-bar（focus）、history/hot tags、rank-list</td></tr>
+        <tr><td>pages/news.html</td><td><code>pages/news/news</code></td><td>segment-tabs、article-card</td></tr>
+        <tr><td>pages/mine.html</td><td><code>pages/mine/mine</code></td><td>profile-header、quick-card、trade-entry、func-grid</td></tr>
+        <tr><td>—</td><td><code>custom-tab-bar/</code></td><td>5 个 tab，index 2 为凸起“转设备”发布按钮</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<p class="foot">
+  提示：原型中的图标由 <code>assets/js/common.js</code> 注入 SVG sprite，小程序中替换为 iconfont 或 <code>&lt;image&gt;</code> 即可；
+  商品图为占位色块，接入后换成 <code>mode="aspectFill"</code> 的 <code>&lt;image&gt;</code>。
+</p>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+.s-head {
+  background:
+    radial-gradient(120% 90% at 8% 0%, #F7FBE4 0%, rgba(247, 251, 228, 0) 55%),
+    linear-gradient(155deg, #F2F8DC 0%, #D9EDB2 40%, #A9DA92 70%, #7FC98D 100%);
+  padding-top: 108rpx;
+  padding-bottom: 20rpx;
+}
+.s-row {
+  display: flex;
+  align-items: center;
+  padding: 0 28rpx;
+}
+.s-back {
+  width: 56rpx;
+  display: flex;
+  align-items: center;
+}
+.s-back-ic { width: 38rpx; height: 38rpx; }
+.s-input {
+  flex: 1;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 12rpx 0 24rpx;
+  border-radius: 36rpx;
+  border: 4rpx solid #101010;
+  background: rgba(255, 255, 255, 0.78);
+}
+.s-input-ic { width: 30rpx; height: 30rpx; margin-right: 10rpx; }
+.s-input-el {
+  flex: 1;
+  font-size: 27rpx;
+  color: #1B1E22;
+  min-width: 0;
+}
+.s-ph { color: #7B8480; }
+.s-clear {
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  background: #C9CFC9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.s-clear-ic { width: 18rpx; height: 18rpx; }
+.s-cancel {
+  padding-left: 20rpx;
+  font-size: 27rpx;
+  font-weight: 600;
+  color: #24312A;
+}
+
+.s-block { padding: 32rpx 28rpx 0; }
+.s-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 27rpx;
+  font-weight: 700;
+  color: #1B1E22;
+  margin-bottom: 20rpx;
+}
+.s-title-ic { width: 30rpx; height: 30rpx; }
+
+.tags { display: flex; flex-wrap: wrap; }
+.tag {
+  padding: 12rpx 24rpx;
+  border-radius: 28rpx;
+  background: #F2F4F6;
+  font-size: 24rpx;
+  color: #3B4048;
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+}
+.tag.hot { background: #EFF7DC; color: #2B7A4B; }
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 0;
+}
+.rank-no {
+  width: 40rpx;
+  font-size: 26rpx;
+  font-weight: 800;
+  font-style: italic;
+  color: #B7BCC4;
+}
+.rank-no-1 { color: #F2555A; }
+.rank-no-2 { color: #FF9B4A; }
+.rank-no-3 { color: #FFC24A; }
+.rank-name {
+  flex: 1;
+  font-size: 26rpx;
+  color: #1B1E22;
+}
+.rank-cnt { font-size: 22rpx; color: #B7BCC4; }
+
+.result-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 28rpx 20rpx;
+  font-size: 24rpx;
+  color: #6C727B;
+}
+.result-count { color: #B7BCC4; }

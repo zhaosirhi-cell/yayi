@@ -1,0 +1,186 @@
+.page-publish {
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+.p-top {
+  background:
+    radial-gradient(120% 90% at 8% 0%, #F7FBE4 0%, rgba(247, 251, 228, 0) 55%),
+    linear-gradient(155deg, #F2F8DC 0%, #D9EDB2 40%, #A9DA92 70%, #7FC98D 100%);
+  padding-bottom: 30rpx;
+}
+
+/* 步骤条 */
+.steps {
+  display: flex;
+  align-items: flex-start;
+  padding: 4rpx 52rpx 0;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.step-dot {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  color: #4C7A56;
+  font-size: 22rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-txt { margin-top: 10rpx; font-size: 21rpx; color: #4C7A56; }
+.step.on .step-dot { background: #1E3325; color: #fff; }
+.step.on .step-txt { color: #1E3325; font-weight: 700; }
+.step-line {
+  flex: 1;
+  height: 3rpx;
+  background: rgba(30, 51, 37, 0.16);
+  margin: 20rpx 12rpx 0;
+}
+
+.estimate-tip {
+  margin: 20rpx 28rpx 0;
+  padding: 16rpx 22rpx;
+  border-radius: 18rpx;
+  background: #EFF7DC;
+  color: #2B7A4B;
+  font-size: 23rpx;
+  line-height: 1.5;
+}
+
+/* 卡片 */
+.f-card {
+  margin: 24rpx 28rpx 0;
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(23, 43, 29, 0.06);
+  overflow: hidden;
+}
+.f-title {
+  display: flex;
+  align-items: baseline;
+  padding: 26rpx 26rpx 8rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+.f-sub { margin-left: 12rpx; font-size: 21rpx; font-weight: 400; color: #8C929B; }
+
+/* 图片上传 */
+.upload {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16rpx 26rpx 26rpx;
+}
+.u-item,
+.u-add {
+  width: 196rpx;
+  height: 196rpx;
+  border-radius: 20rpx;
+  margin-right: 14rpx;
+  margin-bottom: 14rpx;
+  position: relative;
+  overflow: hidden;
+}
+.u-item { background: #E4EAF1; }
+.u-img { width: 100%; height: 100%; display: block; }
+.u-del {
+  position: absolute;
+  right: 6rpx;
+  top: 6rpx;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: rgba(20, 23, 26, 0.62);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.u-del-ic { width: 18rpx; height: 18rpx; }
+.u-add {
+  border: 2rpx dashed #D7DBE1;
+  background: #FAFBFC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.u-add-ic { width: 44rpx; height: 44rpx; }
+.u-add-txt { margin-top: 10rpx; font-size: 21rpx; color: #8C929B; }
+
+/* 表单行 */
+.f-row {
+  display: flex;
+  align-items: center;
+  min-height: 96rpx;
+  padding: 0 26rpx;
+  border-top: 2rpx solid #EFF1F4;
+  font-size: 27rpx;
+}
+.f-label {
+  width: 168rpx;
+  flex: 0 0 auto;
+  color: #2B2F34;
+}
+.f-req { color: #F2555A; margin-right: 4rpx; }
+.f-input {
+  flex: 1;
+  font-size: 27rpx;
+  color: #1B1E22;
+  min-width: 0;
+}
+.f-ph { color: #B7BCC4; }
+.f-value { flex: 1; color: #1B1E22; }
+.f-unit { font-size: 24rpx; color: #8C929B; margin-left: 8rpx; }
+.f-arrow { width: 26rpx; height: 26rpx; flex: 0 0 auto; }
+
+.f-tip {
+  margin: 24rpx 28rpx 0;
+  font-size: 22rpx;
+  color: #8C929B;
+  line-height: 1.7;
+}
+.f-tip-b { color: #2B7A4B; font-weight: 600; }
+
+/* 底部提交 */
+.p-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 16rpx 28rpx calc(16rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -4rpx 28rpx rgba(23, 43, 29, 0.09);
+}
+.p-save {
+  width: 216rpx;
+  height: 84rpx;
+  border-radius: 42rpx;
+  border: 3rpx solid #C6E4A2;
+  color: #2B7A4B;
+  font-size: 28rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+.p-submit {
+  flex: 1;
+  height: 84rpx;
+  border-radius: 42rpx;
+  background: linear-gradient(120deg, #A8DA8A, #4FB877);
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12rpx 28rpx rgba(79, 184, 119, 0.32);
+}

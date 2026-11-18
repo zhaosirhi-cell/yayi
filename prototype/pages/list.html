@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>二手设备列表 · 再美二手光电</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+  .l-top {
+    background: linear-gradient(160deg, #F4FAE2 0%, #DCEFB8 58%, #AFDD96 100%);
+    padding-top: 46px;
+    position: relative;
+  }  .l-nav {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 14px;
+    position: relative;
+  }
+  .l-nav .back { color: #24312A; }
+  .l-nav .back .ic { width: 20px; height: 20px; stroke-width: 2.2; }
+  .l-nav h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    font-weight: 700;
+    color: #1E3325;
+    white-space: nowrap;
+  }
+  .l-nav .s-btn2 { margin-left: auto; color: #24312A; }
+  .l-nav .s-btn2 .ic { width: 20px; height: 20px; }
+  .sort-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px 12px;
+  }
+  .sort-bar > span {
+    flex: 1;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+  }
+  .sort-bar > span.on { color: var(--green-700); font-weight: 800; }
+  .sort-bar .ic { width: 11px; height: 11px; opacity: .65; }
+  .sort-bar .filter-pill {
+    flex: 0 0 auto;
+    padding: 0 12px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .8);
+  }
+  .total-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px 10px;
+    font-size: 11.5px;
+    color: var(--gray);
+  }
+  .total-line b { color: var(--green-700); }
+</style>
+</head>
+<body class="page">
+<div class="phone">
+  <div class="screen">
+
+    <div class="l-top">
+      <div class="capsule" data-capsule></div>
+      <div class="l-nav">
+        <a class="back" href="home.html"><svg class="ic"><use href="#i-back"/></svg></a>
+        <h1>二手设备</h1>
+        <a class="s-btn2" href="search.html"><svg class="ic"><use href="#i-search"/></svg></a>
+      </div>
+      <div class="sort-bar">
+        <span class="on">综合<svg class="ic"><use href="#i-caret"/></svg></span>
+        <span>最新</span>
+        <span>价格<svg class="ic"><use href="#i-caret"/></svg></span>
+        <span>年份<svg class="ic"><use href="#i-caret"/></svg></span>
+        <span class="filter-pill">筛选<svg class="ic"><use href="#i-filter"/></svg></span>
+      </div>
+    </div>
+
+    <div class="chips" style="padding-top:12px">
+      <span class="chip on">全部</span>
+      <span class="chip">激光设备</span>
+      <span class="chip">射频设备</span>
+      <span class="chip">注射类</span>
+      <span class="chip">塑形减脂</span>
+      <span class="chip">维修保养</span>
+    </div>
+
+    <div class="total-line">
+      <span>共 <b>1,286</b> 台设备在售</span>
+      <span>按发布时间排序</span>
+    </div>
+
+    <a class="lcard" href="detail.html">
+      <div class="lcard-media">
+        <span class="ph-tag">甄选</span>
+        <svg class="ic"><use href="#i-camera"/></svg>
+      </div>
+      <div class="lcard-main">
+        <h4>科医人 M22 超光子 王者之心 2022 款</h4>
+        <p class="lcard-sub">激光设备 · 9 成新 · 2022 年 · 上海浦东</p>
+        <div class="lcard-tags"><i>平台核验</i><i>可开发票</i><i>支持验机</i></div>
+        <div class="lcard-foot">
+          <span class="price">¥58<small>万</small></span>
+          <span class="mini-btn">立即咨询</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="lcard" href="detail.html">
+      <div class="lcard-media">
+        <span class="ph-tag">在售</span>
+        <svg class="ic"><use href="#i-camera"/></svg>
+      </div>
+      <div class="lcard-main">
+        <h4>赛诺龙 超皮秒 Picoway 五代 含手具</h4>
+        <p class="lcard-sub">激光设备 · 8 成新 · 2021 年 · 北京朝阳</p>
+        <div class="lcard-tags"><i>整机保养</i><i>配件齐全</i></div>
+        <div class="lcard-foot">
+          <span class="price">¥42<small>万</small></span>
+          <span class="mini-btn">立即咨询</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="lcard" href="detail.html">
+      <div class="lcard-media">
+        <span class="ph-tag">急出</span>
+        <svg class="ic"><use href="#i-camera"/></svg>
+      </div>
+      <div class="lcard-main">
+        <h4>半岛 超声炮 全脸抗衰 三代</h4>
+        <p class="lcard-sub">射频设备 · 9 成新 · 2023 年 · 广州天河</p>
+        <div class="lcard-tags"><i>一台一价</i><i>可议价</i></div>
+        <div class="lcard-foot">
+          <span class="price">¥16.8<small>万</small></span>
+          <span class="mini-btn">立即咨询</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="lcard" href="detail.html">
+      <div class="lcard-media">
+        <span class="ph-tag">在售</span>
+        <svg class="ic"><use href="#i-camera"/></svg>
+      </div>
+      <div class="lcard-main">
+        <h4>飞顿 黑金超光子 DPL 平台</h4>
+        <p class="lcard-sub">激光设备 · 8 成新 · 2020 年 · 成都武侯</p>
+        <div class="lcard-tags"><i>机构转让</i><i>可看机</i></div>
+        <div class="lcard-foot">
+          <span class="price">¥21.5<small>万</small></span>
+          <span class="mini-btn">立即咨询</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="lcard" href="detail.html">
+      <div class="lcard-media">
+        <span class="ph-tag">在售</span>
+        <svg class="ic"><use href="#i-camera"/></svg>
+      </div>
+      <div class="lcard-main">
+        <h4>路创丽 Cooltech 冷冻减脂仪</h4>
+        <p class="lcard-sub">塑形设备 · 8 成新 · 2020 年 · 杭州西湖</p>
+        <div class="lcard-tags"><i>含耗材</i><i>可开发票</i></div>
+        <div class="lcard-foot">
+          <span class="price">¥9.8<small>万</small></span>
+          <span class="mini-btn">立即咨询</span>
+        </div>
+      </div>
+    </a>
+
+    <p class="empty" style="padding:20px 0 10px">— 上拉加载更多 —</p>
+  </div>
+</div>
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

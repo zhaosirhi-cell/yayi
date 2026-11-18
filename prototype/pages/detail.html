@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>设备详情 · 再美二手光电</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+  /* 主图区 */
+  .d-media {
+    position: relative;
+    height: 268px;
+    background: linear-gradient(150deg, #E9EFF6, #D3DFEA);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .d-media .ph-big { width: 62px; height: 62px; color: #AFBCC8; stroke-width: 1.15; }
+  .d-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(65% 55% at 62% 26%, rgba(255, 255, 255, .9), transparent 70%);
+  }
+  .d-nav {
+    position: absolute;
+    left: 0; right: 0; top: 46px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 14px;
+    z-index: 5;
+  }
+  .ico-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .8);
+    backdrop-filter: blur(4px);
+    display: grid;
+    place-items: center;
+    color: #25302A;
+    box-shadow: 0 2px 8px rgba(30, 50, 40, .1);
+  }
+  .ico-btn .ic { width: 18px; height: 18px; stroke-width: 2; }
+  .d-count {
+    position: absolute;
+    right: 14px; bottom: 14px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    background: rgba(15, 20, 18, .45);
+    color: #fff;
+    font-size: 11px;
+    z-index: 5;
+  }
+
+  /* 主信息 */
+  .d-head { padding: 14px 14px 0; background: #fff; }
+  .d-price { display: flex; align-items: baseline; gap: 8px; }
+  .d-price b { font-size: 24px; font-weight: 800; color: #F2555A; letter-spacing: -.5px; }
+  .d-price b small { font-size: 13px; margin-left: 2px; }
+  .d-price span {
+    font-size: 10.5px;
+    color: var(--green-700);
+    background: var(--green-100);
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  .d-title {
+    margin-top: 8px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #15171A;
+  }
+  .d-tags { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .d-tags i {
+    font-style: normal;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    color: #5A6069;
+    background: #F3F5F7;
+  }
+  .d-tags i.g { color: var(--green-700); background: var(--green-100); }
+
+  /* 保障条 */
+  .d-guarantee {
+    margin: 12px 14px 0;
+    padding: 10px 12px;
+    display: flex;
+    gap: 4px;
+    background: linear-gradient(100deg, #F5FAE8, #EDF7E0);
+    border-radius: 10px;
+  }
+  .d-guarantee div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #4C7A56;
+  }
+  .d-guarantee .ic { width: 14px; height: 14px; color: var(--green-600); flex: 0 0 auto; }
+
+  /* 通用卡片 */
+  .d-card {
+    margin: 12px 14px 0;
+    background: #fff;
+    border-radius: var(--r-m);
+    padding: 13px;
+    box-shadow: var(--sh-card);
+  }
+  .d-card h4 {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .d-card h4::before {
+    content: '';
+    width: 3px; height: 13px;
+    border-radius: 2px;
+    background: linear-gradient(#8FD08A, #4FB877);
+  }
+  .spec { display: flex; flex-wrap: wrap; }
+  .spec div {
+    width: 50%;
+    font-size: 12.5px;
+    padding: 6px 0;
+    color: var(--ink-3);
+  }
+  .spec div b { color: #1B1E22; font-weight: 600; margin-left: 4px; }
+
+  .seller { display: flex; align-items: center; gap: 10px; }
+  .seller .logo {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: linear-gradient(140deg, #EAF7DA, #9FD98A);
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 800; color: #1E3325;
+  }
+  .seller .s-main { flex: 1; }
+  .seller .s-main b { font-size: 13.5px; display: flex; align-items: center; gap: 5px; }
+  .seller .s-main b em {
+    font-style: normal; font-size: 9.5px; font-weight: 700;
+    color: var(--green-700); background: var(--green-100);
+    padding: 1px 5px; border-radius: 4px;
+  }
+  .seller .s-main small { display: block; font-size: 10.5px; color: var(--gray); margin-top: 3px; }
+  .seller .s-btn {
+    padding: 5px 11px;
+    border-radius: 12px;
+    border: 1px solid var(--green-300);
+    color: var(--green-700);
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .desc { font-size: 12.5px; line-height: 1.75; color: var(--ink-3); }
+  .desc p { margin-bottom: 6px; }
+
+  .rel { display: flex; gap: 10px; padding: 0 14px; }
+
+  /* 底部操作栏 */
+  .d-actions {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 66px;
+    background: #fff;
+    box-shadow: 0 -2px 14px rgba(23, 43, 29, .09);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 14px 0 6px;
+    z-index: 20;
+  }
+  .d-actions .op {
+    width: 46px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    color: #5A6069;
+    font-size: 10px;
+  }
+  .d-actions .op .ic { width: 21px; height: 21px; }
+  .d-actions .op.on { color: var(--green-700); }
+  .d-actions .btn-ghost {
+    flex: 1;
+    height: 40px;
+    border-radius: 20px;
+    border: 1.5px solid var(--green-400);
+    color: var(--green-700);
+    font-size: 14px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+  }
+  .d-actions .btn-solid {
+    flex: 1.25;
+    height: 40px;
+    border-radius: 20px;
+    background: linear-gradient(120deg, #A8DA8A, #4FB877);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 14px rgba(79, 184, 119, .32);
+  }
+  .d-actions .home-indicator { bottom: 4px; }
+</style>
+</head>
+<body class="page">
+<div class="phone">
+  <div class="screen" style="padding-bottom:78px">
+
+    <!-- 主图 -->
+    <div class="d-media">
+      <div class="capsule" data-capsule></div>
+      <svg class="ic ph-big"><use href="#i-camera"/></svg>
+      <div class="d-nav">
+        <a class="ico-btn" href="home.html"><svg class="ic"><use href="#i-back"/></svg></a>
+        <a class="ico-btn" href="javascript:void(0)"><svg class="ic"><use href="#i-share"/></svg></a>
+      </div>
+      <span class="d-count">1 / 8</span>
+    </div>
+
+    <!-- 价格 / 标题 -->
+    <section class="d-head">
+      <div class="d-price">
+        <b>¥58<small>万</small></b>
+        <span>支持议价</span>
+      </div>
+      <h1 class="d-title">科医人 M22 超光子 王者之心 2022 款 含一台备用主机头</h1>
+      <div class="d-tags">
+        <i class="g">9 成新</i>
+        <i class="g">2022 年</i>
+        <i>上海 · 浦东新区</i>
+        <i>可开发票</i>
+        <i>支持验机</i>
+      </div>
+    </section>
+
+    <!-- 平台保障 -->
+    <div class="d-guarantee">
+      <div><svg class="ic"><use href="#i-shield"/></svg>平台核验</div>
+      <div><svg class="ic"><use href="#i-check"/></svg>出质检报告</div>
+      <div><svg class="ic"><use href="#i-loc"/></svg>可上门看机</div>
+    </div>
+
+    <!-- 设备参数 -->
+    <section class="d-card">
+      <h4>设备参数</h4>
+      <div class="spec">
+        <div>品牌<b>Lumenis 科医人</b></div>
+        <div>型号<b>M22</b></div>
+        <div>设备分类<b>激光设备</b></div>
+        <div>出厂年份<b>2022 年</b></div>
+        <div>成色<b>9 成新</b></div>
+        <div>使用时长<b>约 320 小时</b></div>
+        <div>配件<b>齐全</b></div>
+        <div>所在地<b>上海 浦东</b></div>
+      </div>
+    </section>
+
+    <!-- 卖家信息 -->
+    <section class="d-card">
+      <h4>卖家信息</h4>
+      <div class="seller">
+        <span class="logo">再美</span>
+        <span class="s-main">
+          <b>上海星辰医美门诊部 <em>已认证</em></b>
+          <small>机构转让 · 在售设备 12 台 · 好评率 98%</small>
+        </span>
+        <a class="s-btn" href="javascript:void(0)">进入店铺</a>
+      </div>
+    </section>
+
+    <!-- 设备描述 -->
+    <section class="d-card">
+      <h4>设备描述</h4>
+      <div class="desc">
+        <p>1. 2022 年采购行货，正规渠道导入，手续齐全，可提供采购凭证与发票。</p>
+        <p>2. 设备运行正常，光斑能量稳定，已做整机保养，手具、脚踏、护目镜等配件齐全。</p>
+        <p>3. 因门诊升级设备转让，支持上门看机、第三方验机，可协助安排物流发货。</p>
+      </div>
+    </section>
+
+    <!-- 相似设备 -->
+    <div class="sec-head">
+      <h3>相似设备</h3>
+      <span class="more">更多<svg class="ic"><use href="#i-arrow"/></svg></span>
+    </div>
+    <div class="rel">
+      <a class="pcard" style="flex:1" href="detail.html">
+        <div class="pcard-media" style="height:112px">
+          <span class="ph-tag">甄选</span>
+          <svg class="ic"><use href="#i-camera"/></svg>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-title"><em>甄选</em>M22 超光子</p>
+          <p class="pcard-sub">9 成新 · 2022 年</p>
+        </div>
+      </a>
+      <a class="pcard" style="flex:1" href="detail.html">
+        <div class="pcard-media" style="height:112px">
+          <span class="ph-tag">在售</span>
+          <svg class="ic"><use href="#i-camera"/></svg>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-title">超皮秒 Picoway</p>
+          <p class="pcard-sub">8 成新 · 2021 年</p>
+        </div>
+      </a>
+    </div>
+    <div style="height:14px"></div>
+  </div>
+
+  <!-- 底部操作栏 -->
+  <div class="d-actions">
+    <a class="op on" href="javascript:void(0)">
+      <svg class="ic"><use href="#i-star"/></svg><span>收藏</span>
+    </a>
+    <a class="op" href="javascript:void(0)">
+      <svg class="ic"><use href="#i-chat"/></svg><span>客服</span>
+    </a>
+    <a class="btn-ghost" href="javascript:void(0)">电话咨询</a>
+    <a class="btn-solid" href="javascript:void(0)">立即咨询</a>
+    <div class="home-indicator"></div>
+  </div>
+</div>
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

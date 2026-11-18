@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首页 · 再美二手光电</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+  /* 首页专属 */
+  .home-ads {
+    display: flex;
+    gap: 9px;
+    padding: 12px 14px 0;
+  }
+  .home-ads a {
+    flex: 1;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    background: #F7F9F3;
+    box-shadow: var(--sh-card);
+  }
+  .home-ads .ad-ic {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    flex: 0 0 auto;
+  }
+  .home-ads .ad-ic .ic { width: 17px; height: 17px; }
+  .home-ads b { display: block; font-size: 12px; }
+  .home-ads small { display: block; font-size: 10px; color: var(--gray); margin-top: 1px; }
+  .notice {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 12px 14px 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #F5FAE8;
+    color: #4C7A56;
+    font-size: 11.5px;
+  }
+  .notice .ic { width: 14px; height: 14px; flex: 0 0 auto; color: var(--green-600); }
+  .notice span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style>
+</head>
+<body class="page">
+<div class="phone">
+  <div class="screen has-tabbar">
+
+    <!-- 顶部品牌 / 搜索 -->
+    <header class="hero">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="sb-right"><i></i></span>
+      </div>
+      <div class="capsule" data-capsule></div>
+      <div class="nav-title">再美二手光电</div>
+      <div class="search-row">
+        <span class="city">全国<svg class="ic" style="color:#14251A"><use href="#i-caret"/></svg></span>
+        <a class="search-pill" href="search.html">
+          <span class="ph-text">搜索设备 / 品牌 / 型号</span>
+          <span class="go"><svg class="ic"><use href="#i-search"/></svg></span>
+        </a>
+      </div>
+    </header>
+
+    <!-- 主 Banner -->
+    <div class="banner">
+      <span class="b-tag">二手医美设备买卖平台</span>
+      <p class="b-title">再美<em>甄选</em>·无忧购</p>
+      <p class="b-en">WORRY FREE SHOPPING</p>
+      <div class="b-desc"><span>放心·省心·安心</span><span>REST ASSURED</span></div>
+      <div class="b-art">再美</div>
+      <div class="b-dots"><i class="on"></i><i></i><i></i></div>
+    </div>
+
+    <!-- 六宫格分类 -->
+    <nav class="cat-grid">
+      <a class="cat cat-1" href="list.html">
+        <svg class="ic"><use href="#i-shop"/></svg><span>二手设备</span>
+      </a>
+      <a class="cat cat-2" href="list.html">
+        <svg class="ic"><use href="#i-doclist"/></svg><span>机构转让</span>
+      </a>
+      <a class="cat cat-3" href="list.html">
+        <svg class="ic"><use href="#i-medbag"/></svg><span>维修保养</span>
+      </a>
+      <a class="cat cat-4" href="pick.html">
+        <svg class="ic"><use href="#i-badge"/></svg><span>再美甄选</span>
+      </a>
+      <a class="cat cat-5" href="publish.html">
+        <svg class="ic"><use href="#i-tag"/></svg><span>我要卖机</span>
+      </a>
+      <a class="cat cat-6" href="publish.html">
+        <svg class="ic"><use href="#i-money"/></svg><span>免费估价</span>
+      </a>
+    </nav>
+
+    <!-- 公告 -->
+    <div class="notice">
+      <svg class="ic"><use href="#i-shield"/></svg>
+      <span>平台已完成 1,286 台设备核验 · 今日新上架 37 台</span>
+    </div>
+
+    <!-- 排序筛选 -->
+    <div class="chips bar">
+      <span class="chip on">最新发布</span>
+      <span class="chip">热门设备</span>
+      <span class="chip">距离最近</span>
+    </div>
+
+    <!-- 商品瀑布流 -->
+    <div class="waterfall">
+      <a class="pcard" href="detail.html">
+        <div class="pcard-media" style="height:132px">
+          <span class="ph-tag">在售</span>
+          <svg class="ic"><use href="#i-camera"/></svg>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-title"><em>特惠</em>UTM 中频药物导入仪</p>
+          <p class="pcard-sub">其他 · 7 成新 · 2023 年</p>
+          <div class="pcard-foot">
+            <span class="link">查看<svg class="ic" style="width:11px;height:11px"><use href="#i-arrow"/></svg></span>
+            <span class="mini-btn">立即咨询</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="pcard" href="detail.html">
+        <div class="pcard-media" style="height:158px">
+          <span class="ph-tag">在售</span>
+          <svg class="ic"><use href="#i-camera"/></svg>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-title"><em>特惠</em>德仕 DR-808 麻醉机</p>
+          <p class="pcard-sub">其他 · 8 成新 · 2024 年</p>
+          <div class="pcard-foot">
+            <span class="link">查看<svg class="ic" style="width:11px;height:11px"><use href="#i-arrow"/></svg></span>
+            <span class="mini-btn">立即咨询</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="pcard" href="detail.html">
+        <div class="pcard-media" style="height:150px">
+          <span class="ph-tag">甄选</span>
+          <svg class="ic"><use href="#i-camera"/></svg>
+          <span class="seal"><svg class="ic"><use href="#i-check"/></svg></span>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-title"><em>甄选</em>科医人 M22 超光子</p>
+          <p class="pcard-sub">激光设备 · 9 成新 · 2022 年</p>
+          <div class="pcard-foot">
+            <span class="link">查看<svg class="ic" style="width:11px;height:11px"><use href="#i-arrow"/></svg></span>
+            <span class="mini-btn">立即咨询</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="pcard" href="detail.html">
+        <div class="pcard-media" style="height:126px">
+          <span class="ph-tag">在售</span>
+          <svg class="ic"><use href="#i-camera"/></svg>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-title"><em>特惠</em>赛诺龙 超皮秒 五代</p>
+          <p class="pcard-sub">激光设备 · 8 成新 · 2021 年</p>
+          <div class="pcard-foot">
+            <span class="link">查看<svg class="ic" style="width:11px;height:11px"><use href="#i-arrow"/></svg></span>
+            <span class="mini-btn">立即咨询</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="pcard" href="detail.html">
+        <div class="pcard-media" style="height:144px">
+          <span class="ph-tag">急出</span>
+          <svg class="ic"><use href="#i-camera"/></svg>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-title">半岛 超声炮 全脸抗衰</p>
+          <p class="pcard-sub">射频设备 · 9 成新 · 2023 年</p>
+          <div class="pcard-foot">
+            <span class="link">查看<svg class="ic" style="width:11px;height:11px"><use href="#i-arrow"/></svg></span>
+            <span class="mini-btn">立即咨询</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="pcard" href="detail.html">
+        <div class="pcard-media" style="height:136px">
+          <span class="ph-tag">在售</span>
+          <svg class="ic"><use href="#i-camera"/></svg>
+        </div>
+        <div class="pcard-body">
+          <p class="pcard-title">飞顿 黑金超光子 DPL</p>
+          <p class="pcard-sub">激光设备 · 8 成新 · 2020 年</p>
+          <div class="pcard-foot">
+            <span class="link">查看<svg class="ic" style="width:11px;height:11px"><use href="#i-arrow"/></svg></span>
+            <span class="mini-btn">立即咨询</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <p class="empty" style="padding:28px 0 8px">— 已经到底啦，下拉看看其他设备 —</p>
+  </div>
+
+  <!-- 悬浮咨询 -->
+  <a class="consult" href="detail.html">
+    <span class="av"><svg class="ic"><use href="#i-chat"/></svg></span>
+    <span class="tx">在线咨询</span>
+  </a>
+
+  <!-- 自定义 tabBar -->
+  <nav class="tabbar" data-tabbar="home"></nav>
+</div>
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

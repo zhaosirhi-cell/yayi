@@ -1,0 +1,15 @@
+{
+  "name": "yayi-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "牙翼 · 二手牙科设备 + 维修服务平台演示",
+  "scripts": {
+    "build": "node tools/build-demo.js",
+    "serve": "node tools/serve.js",
+    "qr": "node tools/make-qr.js",
+    "check": "node tools/check.js"
+  },
+  "devDependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>搜索 · 再美二手光电</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+  .s-head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 52px 14px 12px;
+    background: linear-gradient(160deg, #F4FAE2 0%, #DCEFB8 55%, #AFDD96 100%);
+  }
+  .s-head .back { color: #24312A; display: grid; place-items: center; }
+  .s-head .back .ic { width: 20px; height: 20px; stroke-width: 2.2; }
+  .s-input {
+    flex: 1;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 6px 0 12px;
+    border-radius: 18px;
+    border: 2px solid #101010;
+    background: rgba(255, 255, 255, .75);
+  }
+  .s-input .ic { width: 14px; height: 14px; color: #4A5148; stroke-width: 2.2; }
+  .s-input input { flex: 1; font-size: 13px; }
+  .s-input input::placeholder { color: #7B8480; }
+  .s-input .clear {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #C9CFC9;
+    color: #fff;
+    display: grid; place-items: center;
+  }
+  .s-input .clear .ic { width: 9px; height: 9px; color: #fff; stroke-width: 3; }
+  .s-cancel { font-size: 13px; color: #24312A; font-weight: 600; }
+
+  .s-block { padding: 16px 14px 0; }
+  .s-block .s-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1B1E22;
+    margin-bottom: 10px;
+  }
+  .s-block .s-title .ic { width: 15px; height: 15px; color: var(--gray); }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags span {
+    padding: 6px 12px;
+    border-radius: 14px;
+    background: #F2F4F6;
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+  .tags span.hot { background: var(--green-100); color: var(--green-700); }
+  .rank-list a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 0;
+  }
+  .rank-list .no {
+    width: 18px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--gray-2);
+    font-style: italic;
+  }
+  .rank-list a:nth-child(1) .no { color: #F2555A; }
+  .rank-list a:nth-child(2) .no { color: #FF9B4A; }
+  .rank-list a:nth-child(3) .no { color: #FFC24A; }
+  .rank-list .nm { flex: 1; font-size: 13px; color: #1B1E22; }
+  .rank-list .cnt { font-size: 11px; color: var(--gray-2); }
+
+  /* 最近浏览 */
+  .recent { display: flex; gap: 9px; }
+  .recent a { flex: 1; min-width: 0; }
+  .recent .r-media {
+    position: relative;
+    height: 76px;
+    border-radius: 9px;
+    background: linear-gradient(150deg, #EAEFF4, #D8E2EB);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .recent .r-media .ic { width: 24px; height: 24px; color: #AFBCC8; stroke-width: 1.3; }
+  .recent p {
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: #1B1E22;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .recent small { font-size: 10px; color: var(--gray-2); }
+</style>
+</head>
+<body class="page">
+<div class="phone">
+  <div class="screen">
+
+    <div class="s-head">
+      <div class="capsule" data-capsule></div>
+      <a class="back" href="home.html"><svg class="ic"><use href="#i-back"/></svg></a>
+      <div class="s-input">
+        <svg class="ic"><use href="#i-search"/></svg>
+        <input type="text" placeholder="M22 超光子" autocomplete="off">
+        <span class="clear"><svg class="ic"><use href="#i-close"/></svg></span>
+      </div>
+      <span class="s-cancel">搜索</span>
+    </div>
+
+    <div class="s-block">
+      <div class="s-title">历史搜索<svg class="ic" style="width:15px;height:15px"><use href="#i-close"/></svg></div>
+      <div class="tags">
+        <span>M22</span>
+        <span>超皮秒</span>
+        <span>超声炮</span>
+        <span>冷冻减脂</span>
+        <span>飞顿 DPL</span>
+      </div>
+    </div>
+
+    <div class="s-block">
+      <div class="s-title">热门搜索</div>
+      <div class="tags">
+        <span class="hot">M22 超光子</span>
+        <span class="hot">紧致提升</span>
+        <span class="hot">皮秒</span>
+        <span>水光针仪</span>
+        <span>光子嫩肤</span>
+        <span>皮秒祛斑</span>
+        <span>黄金微针</span>
+        <span>红光治疗仪</span>
+      </div>
+    </div>
+
+    <div class="s-block">
+      <div class="s-title">大家都在找</div>
+      <div class="rank-list">
+        <a href="detail.html"><span class="no">1</span><span class="nm">科医人 M22 王者之心</span><span class="cnt">2,318 人查看</span></a>
+        <a href="detail.html"><span class="no">2</span><span class="nm">赛诺龙 超皮秒 Picoway</span><span class="cnt">1,876 人查看</span></a>
+        <a href="detail.html"><span class="no">3</span><span class="nm">半岛 超声炮</span><span class="cnt">1,542 人查看</span></a>
+        <a href="detail.html"><span class="no">4</span><span class="nm">飞顿 黑金超光子</span><span class="cnt">1,097 人查看</span></a>
+        <a href="detail.html"><span class="no">5</span><span class="nm">路创丽 冷冻减脂仪</span><span class="cnt">864 人查看</span></a>
+      </div>
+    </div>
+    <div class="s-block">
+      <div class="s-title">最近浏览<svg class="ic" style="width:15px;height:15px"><use href="#i-clock"/></svg></div>
+      <div class="recent">
+        <a href="detail.html">
+          <div class="r-media"><svg class="ic"><use href="#i-camera"/></svg></div>
+          <p>M22 超光子</p><small>¥58 万</small>
+        </a>
+        <a href="detail.html">
+          <div class="r-media"><svg class="ic"><use href="#i-camera"/></svg></div>
+          <p>超皮秒 五代</p><small>¥42 万</small>
+        </a>
+        <a href="detail.html">
+          <div class="r-media"><svg class="ic"><use href="#i-camera"/></svg></div>
+          <p>半岛 超声炮</p><small>¥16.8 万</small>
+        </a>
+      </div>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

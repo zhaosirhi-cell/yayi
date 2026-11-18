@@ -1,0 +1,151 @@
+page { background: #FFFFFF; }
+
+.mine-hero {
+  position: relative;
+  height: 584rpx;
+  border-radius: 0 0 50% 50% / 0 0 26% 26%;
+  background:
+    radial-gradient(110% 80% at 10% 0%, #F8FBE8 0%, rgba(248, 251, 232, 0) 60%),
+    linear-gradient(160deg, #F2F8DC 0%, #D5EBAE 32%, #9FD58B 66%, #58BE85 100%);
+  overflow: hidden;
+}
+.mine-tools {
+  position: absolute;
+  right: 32rpx;
+  top: 212rpx;
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mine-gear { width: 44rpx; height: 44rpx; }
+
+.mine-user {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 300rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mine-avatar {
+  width: 172rpx;
+  height: 172rpx;
+  border-radius: 50%;
+  background: #C9D8FB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12rpx 32rpx rgba(40, 90, 60, 0.16);
+}
+.mine-avatar-ic { width: 104rpx; height: 104rpx; }
+.mine-name {
+  margin-top: 20rpx;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #16261B;
+  letter-spacing: 1rpx;
+}
+.mine-sub {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #4C7A56;
+}
+
+/* 快捷入口 */
+.quick-card {
+  display: flex;
+  align-items: center;
+  margin: 20rpx 28rpx 0;
+  height: 124rpx;
+  border-radius: 24rpx;
+  background: #fff;
+  box-shadow: 0 8rpx 32rpx rgba(23, 43, 29, 0.1);
+}
+.quick-item {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  color: #3B4048;
+  position: relative;
+}
+.quick-item + .quick-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2rpx;
+  height: 36rpx;
+  background: #EFF1F4;
+}
+
+/* 区块 */
+.block { padding: 40rpx 32rpx 0; }
+.block-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #16261B;
+  margin-bottom: 28rpx;
+}
+
+.trade-row { display: flex; }
+.trade-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.trade-item:first-child { margin-right: 28rpx; }
+.ic-round {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.ic-round-ic { width: 48rpx; height: 48rpx; }
+.t-buy { background: linear-gradient(140deg, #FFC46B, #FF6FA8); }
+.t-sell { background: linear-gradient(140deg, #FFA3D5, #E24FA8); }
+.trade-txt { margin-left: 20rpx; min-width: 0; }
+.trade-name {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1B1E22;
+}
+.trade-sub {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  color: #8C929B;
+}
+
+/* 功能九宫格 */
+.func-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+.func-item {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+.func-ic { width: 52rpx; height: 52rpx; }
+.func-name {
+  margin-top: 14rpx;
+  font-size: 23rpx;
+  color: #3B4048;
+}
+
+.version {
+  padding: 30rpx 0 20rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: #B7BCC4;
+}

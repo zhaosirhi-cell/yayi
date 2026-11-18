@@ -1,0 +1,49 @@
+<view class="page-tab">
+
+  <view class="hero hero-flat">
+    <nav-bar title="再美二手光电" theme="dark" />
+    <view class="news-tabs">
+      <view
+        class="nt {{tab === item.key ? 'on' : ''}}"
+        wx:for="{{tabs}}"
+        wx:key="key"
+        data-tab="{{item.key}}"
+        bindtap="onTabTap"
+      >{{item.name}}</view>
+    </view>
+  </view>
+
+  <view class="news-list">
+    <view class="news-card" wx:for="{{list}}" wx:key="id" bindtap="onNewsTap" hover-class="card-hover">
+      <view class="news-cover">
+        <view class="bub b1"></view>
+        <view class="bub b2"></view>
+        <view class="bub b3"></view>
+        <block wx:if="{{item.cover === 'weekly'}}">
+          <text class="nc-head">Medical Beauty Weekly Report</text>
+          <view class="nc-title"><text class="nc-q">医美</text>周报</view>
+          <view class="nc-tag">掌握(医美圈一手资讯)</view>
+        </block>
+        <block wx:else>
+          <text class="nc-head">Company News · 再美</text>
+          <view class="nc-title nc-title-sm">再美<text class="nc-sub">动态</text></view>
+          <view class="nc-tag">再美二手光电 · 平台公告</view>
+        </block>
+      </view>
+      <view class="news-body">
+        <view class="news-title">{{item.title}}</view>
+        <view class="news-foot">
+          <view class="news-logo">再美</view>
+          <text class="news-who">{{item.author}}</text>
+          <view class="news-thumb">
+            <image class="news-thumb-ic" src="/assets/icons/thumb-gray.png" mode="aspectFit" />
+            <text>{{item.likes}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="list-end" wx:if="{{!loading && !list.length}}">暂无资讯</view>
+  <view class="list-end" wx:else>— 没有更多资讯了 —</view>
+</view>

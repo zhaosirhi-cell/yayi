@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我的 · 再美二手光电</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+  /* 顶部弧形头图 */
+  .mine-hero {
+    position: relative;
+    height: 292px;
+    background:
+      radial-gradient(110% 80% at 10% 0%, #F8FBE8 0%, rgba(248, 251, 232, 0) 60%),
+      linear-gradient(160deg, #F2F8DC 0%, #D5EBAE 32%, #9FD58B 66%, #58BE85 100%);
+    border-radius: 0 0 50% 50% / 0 0 26% 26%;
+  }
+  .mine-hero .settings {
+    position: absolute;
+    right: 16px;
+    top: 106px;
+    color: #2C4634;
+  }
+  .mine-hero .settings .ic { width: 22px; height: 22px; }
+  .mine-hero .mine-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 60px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1E3325;
+  }
+  .mine-user {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .mine-user .avatar {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    background: #C9D8FB;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(40, 90, 60, .16);
+  }
+  .mine-user .avatar .ic { width: 52px; height: 52px; stroke-width: 1.2; fill: #fff; }
+  .mine-user .nickname {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #16261B;
+    letter-spacing: .5px;
+  }
+
+  /* 快捷入口卡 */
+  .quick-card {
+    position: relative;
+    margin: 10px 14px 0;
+    height: 62px;
+    border-radius: var(--r-m);
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(23, 43, 29, .1);
+    display: flex;
+    align-items: center;
+  }
+  .quick-card a {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-2);
+    position: relative;
+  }
+  .quick-card a + a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 18px;
+    background: var(--line);
+  }
+  .quick-card a b { font-weight: 600; }
+
+  /* 我的交易 / 我的功能 */
+  .block { padding: 20px 16px 0; }
+  .block h3 { font-size: 15px; font-weight: 800; color: #16261B; margin-bottom: 14px; }
+  .trade-row { display: flex; gap: 14px; }
+  .trade-row a {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .trade-row .ic-round {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    flex: 0 0 auto;
+  }
+  .trade-row .ic-round .ic { width: 24px; height: 24px; stroke-width: 1.6; }
+  .trade-row .t-buy { background: linear-gradient(140deg, #FFC46B, #FF6FA8); }
+  .trade-row .t-sell { background: linear-gradient(140deg, #FFA3D5, #E24FA8); }
+  .trade-row b { display: block; font-size: 14px; font-weight: 700; color: #1B1E22; }
+  .trade-row small { display: block; font-size: 10.5px; color: var(--gray); margin-top: 3px; }
+
+  .func-grid { display: flex; flex-wrap: wrap; gap: 22px 30px; }
+  .func-grid a { display: flex; flex-direction: column; align-items: center; gap: 7px; width: 56px; }
+  .func-grid .f-ic {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: #23272C;
+  }
+  .func-grid .f-ic .ic { width: 26px; height: 26px; stroke-width: 1.5; }
+  .func-grid span { font-size: 11.5px; color: var(--ink-2); }
+</style>
+</head>
+<body class="page">
+<div class="phone">
+  <div class="screen has-tabbar">
+
+    <header class="mine-hero">
+      <div class="capsule" data-capsule></div>
+      <p class="mine-title">我的</p>
+      <a class="settings" href="javascript:void(0)"><svg class="ic"><use href="#i-gear"/></svg></a>
+      <div class="mine-user">
+        <div class="avatar"><svg class="ic"><use href="#i-user"/></svg></div>
+        <p class="nickname">授权登录</p>
+      </div>
+    </header>
+
+    <!-- 快捷入口 -->
+    <nav class="quick-card">
+      <a href="javascript:void(0)"><b>关注产品</b></a>
+      <a href="javascript:void(0)"><b>浏览历史</b></a>
+      <a href="javascript:void(0)"><b>帮助中心</b></a>
+    </nav>
+
+    <!-- 我的交易 -->
+    <section class="block">
+      <h3>我的交易</h3>
+      <div class="trade-row">
+        <a href="javascript:void(0)">
+          <span class="ic-round t-buy"><svg class="ic"><use href="#i-cart"/></svg></span>
+          <span>
+            <b>我买到的</b>
+            <small>点击查看已采购订单</small>
+          </span>
+        </a>
+        <a href="javascript:void(0)">
+          <span class="ic-round t-sell"><svg class="ic"><use href="#i-bars"/></svg></span>
+          <span>
+            <b>我卖出的</b>
+            <small>点击查看发布订单</small>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 我的功能 -->
+    <section class="block" style="padding-bottom:8px">
+      <h3>我的功能</h3>
+      <div class="func-grid">
+        <a href="publish.html">
+          <span class="f-ic"><svg class="ic"><use href="#i-edit"/></svg></span>
+          <span>我的估价</span>
+        </a>
+        <a href="publish.html">
+          <span class="f-ic"><svg class="ic"><use href="#i-tag"/></svg></span>
+          <span>我的发布</span>
+        </a>
+        <a href="javascript:void(0)">
+          <span class="f-ic"><svg class="ic"><use href="#i-shield"/></svg></span>
+          <span>实名认证</span>
+        </a>
+        <a href="javascript:void(0)">
+          <span class="f-ic"><svg class="ic"><use href="#i-chat"/></svg></span>
+          <span>联系客服</span>
+        </a>
+      </div>
+    </section>
+
+    <p class="empty" style="padding:30px 0 6px;font-size:11px">再美二手光电 v1.0.0</p>
+  </div>
+
+  <nav class="tabbar" data-tabbar="mine"></nav>
+</div>
+<script src="../assets/js/common.js"></script>
+</body>
+</html>

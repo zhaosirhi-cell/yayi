@@ -1,0 +1,111 @@
+<view class="page-tab">
+
+  <!-- 顶部：品牌 + 城市 + 搜索 -->
+  <view class="hero">
+    <nav-bar title="再美二手光电" theme="dark" />
+    <view class="search-row">
+      <picker
+        class="city-picker"
+        mode="selector"
+        range="{{cities}}"
+        value="{{cityIndex}}"
+        bindchange="onCityChange"
+      >
+        <view class="city">
+          <text class="city-txt">{{city}}</text>
+          <image class="ic" src="/assets/icons/caret-dark.png" mode="aspectFit" />
+        </view>
+      </picker>
+      <view class="search-pill" bindtap="goSearch">
+        <text class="search-pill-txt">搜索设备 / 品牌 / 型号</text>
+        <view class="search-go">
+          <image class="ic" src="/assets/icons/search-white.png" mode="aspectFit" />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主 Banner -->
+  <view class="banner" bindtap="goPick">
+    <view class="b-tag">二手医美设备买卖平台</view>
+    <view class="b-title">再美<text class="b-em">甄选</text>·无忧购</view>
+    <view class="b-en">WORRY FREE SHOPPING</view>
+    <view class="b-desc">
+      <text class="b-desc-item">放心 · 省心 · 安心</text>
+      <text class="b-desc-item">REST ASSURED</text>
+    </view>
+    <view class="b-art">再美</view>
+    <view class="b-dots">
+      <view class="b-dot on"></view>
+      <view class="b-dot"></view>
+      <view class="b-dot"></view>
+    </view>
+  </view>
+
+  <!-- 六宫格 -->
+  <view class="cat-grid">
+    <view
+      class="cat {{item.cls}}"
+      wx:for="{{cats}}"
+      wx:key="key"
+      data-url="{{item.url}}"
+      bindtap="onCatTap"
+      hover-class="cat-hover"
+    >
+      <image class="cat-ic" src="/assets/icons/{{item.icon}}-white.png" mode="aspectFit" />
+      <text class="cat-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 公告 -->
+  <view class="notice">
+    <image class="notice-ic" src="/assets/icons/shield-green.png" mode="aspectFit" />
+    <text class="notice-txt">{{notice}}</text>
+  </view>
+
+  <!-- 排序 -->
+  <view class="chips">
+    <view
+      class="chip {{sortIndex === index ? 'on' : ''}}"
+      wx:for="{{sorts}}"
+      wx:key="key"
+      data-index="{{index}}"
+      bindtap="onSortTap"
+    >{{item.name}}</view>
+  </view>
+
+  <!-- 瀑布流 -->
+  <view class="waterfall">
+    <view class="wf-col">
+      <goods-card
+        class="wf-item"
+        wx:for="{{colA}}"
+        wx:key="id"
+        item="{{item}}"
+        imgH="{{item.h}}"
+        mode="water"
+      />
+    </view>
+    <view class="wf-col">
+      <goods-card
+        class="wf-item"
+        wx:for="{{colB}}"
+        wx:key="id"
+        item="{{item}}"
+        imgH="{{item.h}}"
+        mode="water"
+      />
+    </view>
+  </view>
+
+  <view class="loading-tip" wx:if="{{loading}}">正在加载…</view>
+  <view class="list-end" wx:else bindtap="goList">— 已经到底啦，去列表看全部设备 —</view>
+</view>
+
+<!-- 悬浮在线咨询 -->
+<view class="consult" bindtap="onConsult">
+  <view class="consult-av">
+    <image class="consult-ic" src="/assets/icons/chat-dark.png" mode="aspectFit" />
+  </view>
+  <view class="consult-tx">在线咨询</view>
+</view>

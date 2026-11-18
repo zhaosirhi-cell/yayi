@@ -1,0 +1,70 @@
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  height: calc(148rpx + env(safe-area-inset-bottom));
+  padding-top: 18rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  background: #FFFFFF;
+  box-shadow: 0 -4rpx 28rpx rgba(23, 43, 29, 0.08);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tab-ic {
+  width: 46rpx;
+  height: 46rpx;
+}
+.tab-txt {
+  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: #7E858F;
+  line-height: 1;
+}
+.tab-txt.on {
+  color: #2B7A4B;
+  font-weight: 700;
+}
+
+/* 中间凸起 */
+.tab-center {
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
+.bubble {
+  position: absolute;
+  top: -34rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 26%, #FBFDE8, #DFF0B4 45%, #9AD289 100%);
+  box-shadow: 0 0 0 8rpx #FFFFFF, 0 16rpx 36rpx rgba(79, 184, 119, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bubble-hover { opacity: 0.85; }
+.bubble-zhuan {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #14251A;
+  letter-spacing: -2rpx;
+}
+.bubble-equip {
+  font-size: 17rpx;
+  font-weight: 700;
+  color: #14251A;
+  margin-left: 2rpx;
+  margin-top: 12rpx;
+}

@@ -1,0 +1,13 @@
+# 依赖与临时产物
+node_modules/
+_shots/
+_preview/
+*.log
+.DS_Store
+Thumbs.db
+
+# 本机私有内容：不纳入公开仓库
+种植牙课程私域操盘/
+zhaopin.html
+引流推广专员-岗位定义与工作要求.md
+引流推广专员-招聘页面.html

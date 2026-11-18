@@ -1,0 +1,139 @@
+<view class="page-normal page-publish">
+
+  <view class="p-top">
+    <nav-bar title="{{pageTitle}}" back="{{true}}" theme="dark" />
+    <view class="steps">
+      <view class="step on">
+        <view class="step-dot">1</view>
+        <text class="step-txt">上传图片</text>
+      </view>
+      <view class="step-line"></view>
+      <view class="step">
+        <view class="step-dot">2</view>
+        <text class="step-txt">填写信息</text>
+      </view>
+      <view class="step-line"></view>
+      <view class="step">
+        <view class="step-dot">3</view>
+        <text class="step-txt">提交审核</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="estimate-tip" wx:if="{{isEstimate}}">
+    不确定价格？先把设备信息填好，平台会给出参考估价区间。
+  </view>
+
+  <!-- 图片 -->
+  <view class="f-card">
+    <view class="f-title">设备图片<text class="f-sub">最多 9 张，建议首图为整机正面</text></view>
+    <view class="upload">
+      <view class="u-item" wx:for="{{images}}" wx:key="*this">
+        <image class="u-img" src="{{item}}" mode="aspectFill" data-index="{{index}}" bindtap="previewImage" />
+        <view class="u-del" data-index="{{index}}" catchtap="onDeleteImage">
+          <image class="u-del-ic" src="/assets/icons/close-white.png" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="u-add" bindtap="onChooseImage" wx:if="{{images.length < 9}}">
+        <image class="u-add-ic" src="/assets/icons/plus-gray.png" mode="aspectFit" />
+        <text class="u-add-txt">{{images.length}}/9</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="f-card">
+    <view class="f-title">基本信息</view>
+
+    <view class="f-row">
+      <text class="f-label"><text class="f-req">*</text>设备名称</text>
+      <input class="f-input" placeholder="如：科医人 M22 超光子" placeholder-class="f-ph"
+        data-field="title" value="{{form.title}}" bindinput="onInput" />
+    </view>
+
+    <picker mode="selector" range="{{categories}}" range-key="name" value="{{form.categoryIndex}}"
+      data-field="categoryIndex" bindchange="onPicker">
+      <view class="f-row">
+        <text class="f-label"><text class="f-req">*</text>设备分类</text>
+        <text class="f-value">{{categories[form.categoryIndex].name}}</text>
+        <image class="f-arrow" src="/assets/icons/arrow-gray.png" mode="aspectFit" />
+      </view>
+    </picker>
+
+    <picker mode="selector" range="{{brands}}" value="{{form.brandIndex}}"
+      data-field="brandIndex" bindchange="onPicker">
+      <view class="f-row">
+        <text class="f-label"><text class="f-req">*</text>品牌</text>
+        <text class="f-value">{{brands[form.brandIndex]}}</text>
+        <image class="f-arrow" src="/assets/icons/arrow-gray.png" mode="aspectFit" />
+      </view>
+    </picker>
+
+    <view class="f-row">
+      <text class="f-label">型号</text>
+      <input class="f-input" placeholder="如：M22 王者之心" placeholder-class="f-ph"
+        data-field="model" value="{{form.model}}" bindinput="onInput" />
+    </view>
+
+    <picker mode="selector" range="{{conditions}}" value="{{form.conditionIndex}}"
+      data-field="conditionIndex" bindchange="onPicker">
+      <view class="f-row">
+        <text class="f-label"><text class="f-req">*</text>成色</text>
+        <text class="f-value">{{conditions[form.conditionIndex]}}</text>
+        <image class="f-arrow" src="/assets/icons/arrow-gray.png" mode="aspectFit" />
+      </view>
+    </picker>
+
+    <picker mode="selector" range="{{years}}" value="{{form.yearIndex}}"
+      data-field="yearIndex" bindchange="onPicker">
+      <view class="f-row">
+        <text class="f-label"><text class="f-req">*</text>出厂年份</text>
+        <text class="f-value">{{years[form.yearIndex]}}</text>
+        <image class="f-arrow" src="/assets/icons/arrow-gray.png" mode="aspectFit" />
+      </view>
+    </picker>
+  </view>
+
+  <!-- 价格与归属 -->
+  <view class="f-card">
+    <view class="f-title">价格与归属</view>
+
+    <view class="f-row">
+      <text class="f-label"><text class="f-req" wx:if="{{!isEstimate}}">*</text>期望售价</text>
+      <input class="f-input" type="digit" placeholder="请输入金额" placeholder-class="f-ph"
+        data-field="price" value="{{form.price}}" bindinput="onInput" />
+      <text class="f-unit">万元</text>
+    </view>
+
+    <picker mode="selector" range="{{cities}}" value="{{form.cityIndex}}"
+      data-field="cityIndex" bindchange="onPicker">
+      <view class="f-row">
+        <text class="f-label"><text class="f-req">*</text>所在城市</text>
+        <text class="f-value">{{cities[form.cityIndex]}}</text>
+        <image class="f-arrow" src="/assets/icons/arrow-gray.png" mode="aspectFit" />
+      </view>
+    </picker>
+
+    <view class="f-row">
+      <text class="f-label"><text class="f-req">*</text>联系人</text>
+      <input class="f-input" placeholder="请输入您的称呼" placeholder-class="f-ph"
+        data-field="contact" value="{{form.contact}}" bindinput="onInput" />
+    </view>
+
+    <view class="f-row">
+      <text class="f-label"><text class="f-req">*</text>手机号</text>
+      <input class="f-input" type="number" maxlength="11" placeholder="用于买家与您联系" placeholder-class="f-ph"
+        data-field="phone" value="{{form.phone}}" bindinput="onInput" />
+    </view>
+  </view>
+
+  <view class="f-tip">
+    <view>· 提交后平台将在<text class="f-tip-b"> 1 个工作日内 </text>完成审核，通过后展示在“最新发布”</view>
+    <view>· 平台仅提供信息展示，请如实描述设备状态，成交后自行完成交付与资质核验</view>
+  </view>
+</view>
+
+<view class="p-actions">
+  <view class="p-save" bindtap="onSaveDraft">存草稿</view>
+  <view class="p-submit" bindtap="onSubmit">{{submitting ? '提交中…' : (isEstimate ? '获取估价' : '提交审核')}}</view>
+</view>

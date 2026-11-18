@@ -1,0 +1,199 @@
+/* 首页内容区为白底，与外层渐变头衔接 */
+page { background: #FFFFFF; }
+
+/* ---------- Banner ---------- */
+.banner {
+  position: relative;
+  margin: 24rpx 28rpx 0;
+  height: 264rpx;
+  border-radius: 32rpx;
+  overflow: hidden;
+  background: linear-gradient(120deg, #FFFFFF 0%, #F3F8EA 40%, #CFE7C0 100%);
+  box-shadow: 0 4rpx 20rpx rgba(23, 43, 29, 0.06);
+}
+.b-tag {
+  position: absolute;
+  left: 28rpx;
+  top: 28rpx;
+  padding: 6rpx 18rpx;
+  border-radius: 20rpx;
+  background: rgba(21, 40, 28, 0.82);
+  color: #fff;
+  font-size: 20rpx;
+}
+.b-title {
+  position: absolute;
+  left: 28rpx;
+  top: 74rpx;
+  font-size: 50rpx;
+  font-weight: 800;
+  letter-spacing: -1rpx;
+  color: #14251A;
+  line-height: 1.1;
+}
+.b-em { color: #2B7A4B; }
+.b-en {
+  position: absolute;
+  left: 28rpx;
+  top: 146rpx;
+  font-size: 18rpx;
+  letter-spacing: 3rpx;
+  color: #6E8A76;
+}
+.b-desc {
+  position: absolute;
+  left: 28rpx;
+  bottom: 28rpx;
+  display: flex;
+}
+.b-desc-item {
+  font-size: 20rpx;
+  color: #2B7A4B;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 20rpx;
+  padding: 6rpx 16rpx;
+  margin-right: 12rpx;
+}
+.b-art {
+  position: absolute;
+  right: -12rpx;
+  bottom: -20rpx;
+  width: 236rpx;
+  height: 236rpx;
+  border-radius: 52rpx;
+  background: linear-gradient(150deg, #ffffff, #E7F3D6);
+  box-shadow: inset 0 0 0 2rpx rgba(255, 255, 255, 0.8), 0 20rpx 44rpx rgba(45, 100, 60, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2B7A4B;
+  font-size: 66rpx;
+  font-weight: 800;
+}
+.b-dots {
+  position: absolute;
+  right: 24rpx;
+  top: 24rpx;
+  display: flex;
+}
+.b-dot {
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: rgba(21, 40, 28, 0.2);
+  margin-left: 6rpx;
+}
+.b-dot.on {
+  width: 20rpx;
+  border-radius: 4rpx;
+  background: #2B7A4B;
+}
+
+/* ---------- 六宫格 ---------- */
+.cat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 28rpx 28rpx 0;
+}
+.cat {
+  width: calc((100% - 44rpx) / 3);
+  height: 176rpx;
+  margin-bottom: 22rpx;
+  border-radius: 36rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 12rpx 28rpx rgba(60, 80, 120, 0.14);
+  position: relative;
+  overflow: hidden;
+}
+.cat:nth-child(3n + 2) { margin-left: 22rpx; }
+.cat:nth-child(3n + 3) { margin-left: 22rpx; }
+.cat-hover { opacity: 0.88; }
+.cat-ic { width: 56rpx; height: 56rpx; margin-bottom: 14rpx; }
+.cat-name { font-size: 26rpx; font-weight: 700; letter-spacing: 1rpx; }
+.cat-1 { background: linear-gradient(140deg, #FFB0B8, #F0579A); }
+.cat-2 { background: linear-gradient(140deg, #9FA0FF, #6667F0); }
+.cat-3 { background: linear-gradient(140deg, #7BE9D2, #2CCFB2); }
+.cat-4 { background: linear-gradient(140deg, #9FB0FF, #6E63F0); }
+.cat-5 { background: linear-gradient(140deg, #FFC46B, #FF7E5F); }
+.cat-6 { background: linear-gradient(140deg, #FFA3D5, #FF6AA8); }
+
+/* ---------- 公告 ---------- */
+.notice {
+  display: flex;
+  align-items: center;
+  margin: 8rpx 28rpx 0;
+  padding: 16rpx 20rpx;
+  border-radius: 20rpx;
+  background: #F5FAE8;
+}
+.notice-ic { width: 28rpx; height: 28rpx; margin-right: 12rpx; }
+.notice-txt {
+  flex: 1;
+  font-size: 23rpx;
+  color: #4C7A56;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ---------- 瀑布流 ---------- */
+.waterfall {
+  display: flex;
+  padding: 8rpx 28rpx 0;
+}
+.wf-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.wf-col:first-child { margin-right: 20rpx; }
+.wf-item { display: block; margin-bottom: 20rpx; }
+
+.loading-tip {
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 24rpx;
+  color: #B7BCC4;
+}
+
+/* ---------- 悬浮咨询 ---------- */
+.consult {
+  position: fixed;
+  right: 16rpx;
+  bottom: calc(200rpx + env(safe-area-inset-bottom));
+  z-index: 90;
+  width: 132rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+.consult-av {
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #F3FADC, #B7E08C 70%);
+  border: 4rpx solid #FFFFFF;
+  box-shadow: 0 8rpx 24rpx rgba(30, 80, 45, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.consult-ic { width: 44rpx; height: 44rpx; }
+.consult-tx {
+  margin-top: -14rpx;
+  padding: 2rpx 12rpx;
+  border-radius: 16rpx;
+  background: linear-gradient(135deg, #8FD08A, #4FB877);
+  color: #fff;
+  font-size: 19rpx;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4rpx 12rpx rgba(30, 80, 45, 0.22);
+}

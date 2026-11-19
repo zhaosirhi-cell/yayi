@@ -28,14 +28,27 @@ const html = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#2B7A4B">
-<meta name="description" content="再美二手光电 · 二手医美设备挂网平台 效果演示">
-<title>再美二手光电 · 效果演示</title>
+<meta name="description" content="牙翼 · 二手牙科设备挂网 + 自主上架 + 维修服务">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="牙翼">
+<title>牙翼 · 二手牙科设备</title>
 <style>
 ${style}
 </style>
 </head>
 <body>
 <div id="app"></div>
+<script>
+  // 注册 Service Worker（仅 https / localhost 生效，file:// 自动跳过）
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("./sw.js").catch(function () {});
+    });
+  }
+</script>
 <script>
 /* 内联占位图（${Object.keys(imgs).length} 张） */
 var IMG = ${JSON.stringify(imgs)};

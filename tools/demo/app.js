@@ -286,7 +286,7 @@
       '<div class="pcard-title">' + (d.isPick ? '<em>甄选</em>' : '') + d.title + '</div>' +
       '<div class="pcard-sub">' + subText(d) + '</div>' +
       '<div class="pcard-foot">' + priceHTML(d.price) +
-      '<span class="mini-btn" data-act="consult">立即咨询</span></div>' +
+      '<span class="mini-btn" data-act="consult" data-id="' + d.id + '">立即咨询</span></div>' +
       '</div></div>'
   }
   function cardRow (d) {
@@ -297,7 +297,7 @@
       '<div class="lcard-sub">' + subText(d) + ' · ' + d.city + '</div>' +
       '<div class="lcard-tags">' + d.tags.map(function (t) { return '<i>' + t + '</i>' }).join('') + '</div>' +
       '<div class="lcard-foot">' + priceHTML(d.price) +
-      '<span class="mini-btn" data-act="consult">立即咨询</span></div>' +
+      '<span class="mini-btn" data-act="consult" data-id="' + d.id + '">立即咨询</span></div>' +
       '</div></div>'
   }
 
@@ -945,6 +945,13 @@
       '<a data-act="tip" data-tip="联系客服"><span class="f-ic">' + icon('chat') + '</span><span>联系客服</span></a>' +
       '</div></div>' +
 
+      '<div class="mine-block"><h3>保存与分享</h3>' +
+      '<div class="save-row">' +
+      '<div class="save-item" data-act="add-home"><span class="si-ic">' + icon('plus') + '</span><b>添加到桌面</b><small>像 App 一样打开</small></div>' +
+      '<div class="save-item" data-act="copy-link"><span class="si-ic">' + icon('doclist') + '</span><b>复制链接</b><small>发给同事/客户</small></div>' +
+      '<div class="save-item" data-act="tip" data-tip="扫码分享"><span class="si-ic">' + icon('camera') + '</span><b>扫码分享</b><small>打开 qr.html 展示</small></div>' +
+      '</div></div>' +
+
       '<div class="mine-block"><h3>内容域</h3>' +
       '<div class="domain-row" data-act="switch-domain">' +
       '<span class="dr-main"><b>' + p.label + '</b><small>切换后全站内容随之变化，旧内容不删除</small></span>' +
@@ -1030,6 +1037,96 @@
     toastTimer = setTimeout(function () {
       if (el.parentNode) el.parentNode.removeChild(el)
     }, 1600)
+  }
+
+  /* ---------------- 线索外发（复制 / 拨号） ---------------- */
+  function copyText (text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text)
+    }
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0'
+      document.body.appendChild(ta)
+      ta.focus()
+      ta.select()
+      var ok = false
+      try { ok = document.execCommand('copy') } catch (e) {}
+      document.body.removeChild(ta)
+      ok ? resolve() : reject(new Error('copy failed'))
+    })
+  }
+
+  var CONTACT = D.CONTACT || { name: '牙翼客服', phone: '', wechat: '' }
+
+  function showLead (title, text, tip, onClose) {
+    closeOverlay()
+    overlay = document.createElement('div')
+    overlay.className = 'mask center'
+    overlay.innerHTML =
+      '<div class="lead">' +
+      '<div class="lead-title">' + title + '</div>' +
+      '<div class="lead-tip">' + (tip || '复制下面的信息，发给牙翼客服微信即可') + '</div>' +
+      '<textarea class="lead-text" readonly id="leadText">' + text + '</textarea>' +
+      '<div class="lead-ops">' +
+      '<span class="lead-btn" data-lead="copy">复制信息</span>' +
+      '<a class="lead-btn primary" href="tel:' + CONTACT.phone + '">直接打电话</a>' +
+      '</div>' +
+      '<div class="lead-close" data-lead="close">关闭</div>' +
+      '</div>'
+    document.body.appendChild(overlay)
+    overlay.addEventListener('click', function (e) {
+      var t = e.target
+      if (t.getAttribute && t.getAttribute('data-lead') === 'copy') {
+        copyText(text).then(function () {
+          toast('已复制，去微信粘贴发给客服')
+        }).catch(function () {
+          var el = document.getElementById('leadText')
+          if (el) { el.focus(); el.select() }
+          toast('长按上面的文字全选后复制')
+        })
+        return
+      }
+      if (t === overlay || (t.getAttribute && t.getAttribute('data-lead') === 'close')) {
+        closeOverlay()
+        if (onClose) onClose()
+      }
+    })
+  }
+
+  function leadDeviceText (d) {
+    var url = location.href.split('#')[0] + '#/detail?id=' + d.id
+    return '【设备咨询】' + (CONTACT.name || '牙翼客服') + '你好，我在牙翼上看到这台设备：\n' +
+      '名称：' + d.title + '\n' +
+      '编号：' + d.id + '\n' +
+      '价格：' + priceNum(d.price) + '\n' +
+      '城市：' + d.city + (d.district ? ' ' + d.district : '') + '\n' +
+      '成色：' + d.condition + (d.year ? ' / ' + d.year + ' 年' : '') + '\n' +
+      '链接：' + url
+  }
+
+  function leadRepairText (o) {
+    return '【维修报修】\n' +
+      '单号：' + o.id + '\n' +
+      '设备：' + o.product + '\n' +
+      '地址：' + o.address.title + '\n' +
+      '联系人：' + o.address.contact + ' ' + o.address.phone + '\n' +
+      '联系时间：' + o.time + '\n' +
+      '故障描述：' + o.desc
+  }
+
+  function leadDeviceSellText (it) {
+    return '【我要卖机】\n' +
+      '标题：' + it.title + '\n' +
+      '类目：' + it.categoryName + '\n' +
+      '品牌型号：' + it.brand + ' ' + it.model + '\n' +
+      '成色/年份：' + it.condition + ' / ' + (it.year || '-') + '\n' +
+      '价格：' + priceNum(it.price) + '\n' +
+      '城市：' + it.city + '\n' +
+      '注册证号：' + (it.registerNo || '无') + '\n' +
+      '含安装调试：' + (it.installIncluded ? '是' : '否') + '\n' +
+      '联系人：' + (it.contact || '') + ' ' + (it.phone || '')
   }
 
   /* ---------------- 路由 ---------------- */
@@ -1213,9 +1310,7 @@
     state.form = null
     state.editingId = null
 
-    showDialog('已提交审核',
-      '演示环境 2 秒后自动通过并上架。\n通过后会出现在首页与设备列表中（带“我的”标记）。',
-      function () { location.hash = '#/seller' })
+    showLead('商品信息已生成', leadDeviceSellText(item), '把这条信息发给牙翼客服（微信），我们审核后帮你上架')
 
     setTimeout(function () {
       var target = state.myItems.filter(function (x) { return x.id === item.id })[0]
@@ -1275,9 +1370,19 @@
       toast(state.favs[id] ? '已收藏' : '已取消收藏')
       render()
     },
-    call: function () { showDialog('电话咨询', '400-800-1234\n演示环境不会真的拨号，正式版本会调起拨号盘。') },
-    consult: function () {
-      showDialog('在线咨询', '演示环境：正式版本这里会直接唤起微信客服会话，并把当前设备信息带给客服。')
+    call: function () {
+      if (CONTACT.phone) location.href = 'tel:' + CONTACT.phone
+      else toast('请先在 data.js 里配置客服电话')
+    },
+    consult: function (el) {
+      var id = el && el.dataset ? el.dataset.id : ''
+      if (id) {
+        var dv = deviceById(id)
+        if (dv) return showLead('咨询这台设备', leadDeviceText(dv), '复制后发给牙翼客服微信，或直接打电话')
+      }
+      showLead('在线咨询',
+        '【在线咨询】\n你好，我想咨询牙翼平台上的设备，方便的时候请联系我。',
+        '复制后发给牙翼客服微信，或直接打电话')
     },
     'news-tab': function (el) { state.newsTab = el.dataset.tab; render() },
     'open-news': function () { showDialog('资讯详情', '演示环境：正式版本会跳转资讯详情页（富文本 / webview）。') },
@@ -1443,9 +1548,9 @@
       })
       saveJSON('zm_orders', state.orders)
       state.repair = { address: f.address, product: '', time: '', desc: '', images: [] }
-      showDialog('报修已提交', '服务商将在 2 小时内联系你，48 小时内上门。\n演示环境不会真的派单。', function () {
-        location.hash = '#/repair-orders'
-      })
+      showLead('报修信息已生成', leadRepairText(state.orders[0]),
+        '把这条信息发给牙翼客服（微信），我们 2 小时内联系你',
+        function () { location.hash = '#/repair-orders' })
     },
     'order-tab': function (el) { state.orderTab = el.dataset.k; render() },
     'do-order-search': function () {
@@ -1464,6 +1569,17 @@
         toast('已取消')
         render()
       }, '确认取消')
+    },
+
+    'add-home': function () {
+      showDialog('添加到手机桌面',
+        'iPhone：用 Safari 打开 → 底部「分享」按钮 → 添加到主屏幕\n\n安卓：用浏览器打开 → 右上角菜单 → 添加到主屏幕 / 添加到桌面\n\n微信内打开的话，先点右上角「···」→ 在浏览器中打开，再按上面操作。',
+        null, '知道了')
+    },
+    'copy-link': function () {
+      var url = location.href.split('#')[0]
+      copyText(url).then(function () { toast('链接已复制，去微信粘贴发送') })
+        .catch(function () { showLead('复制链接发给对方', url, '长按上面的链接复制') })
     },
 
     screens: function () {

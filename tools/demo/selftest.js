@@ -60,9 +60,13 @@ window.addEventListener('load', function () {
       f.price = '30'
       f.images = [IMG['eq-3']]
       click($('#app .btn-solid[data-act=submit]'))
-      await sleep(320)
-      check('发布提交 -> 审核弹窗', !!$('.dialog'))
-      click($('.dialog .d-btn'))
+      await sleep(400)
+      check('发布提交 -> 线索弹层（可复制发送）', !!$('.lead') && !!$('#leadText'))
+      check('线索文本含商品信息', $('#leadText').value.indexOf('【我要卖机】') > -1)
+      click($('.lead-close'))
+      await sleep(240)
+      check('弹层可关闭', !$('.lead'))
+      click($('.lead-close') || document.body)
       await sleep(2600)
       var mine = window.__demoState.myItems.filter(function (x) { return x.title === '测试 CBCT 设备' })[0]
       check('提交后自动审核通过并上架', !!mine && mine.status === 'on')
@@ -100,10 +104,11 @@ window.addEventListener('load', function () {
       rp.desc = '椅位升降卡顿，脚踏无响应'
       var beforeOrders = window.__demoState.orders.length
       click($('[data-act=submit-repair]'))
-      await sleep(350)
-      check('报修提交成功弹窗', !!$('.dialog'))
-      click($('.dialog .d-btn'))
       await sleep(400)
+      check('报修提交 -> 线索弹层', !!$('.lead'))
+      check('报修文本含单号与故障描述', $('#leadText').value.indexOf('【维修报修】') > -1 && $('#leadText').value.indexOf('椅位升降卡顿') > -1)
+      click($('.lead-close'))
+      await sleep(500)
       check('订单生成并跳转我的订单', window.__demoState.orders.length === beforeOrders + 1 && location.hash === '#/repair-orders')
       check('订单列表渲染', $$('.od-item').length === beforeOrders + 1)
       click($$('[data-act=order-tab]')[2])

@@ -1,29 +1,47 @@
 # 牙翼 · 二手牙科设备 + 维修服务平台
 
-牙科设备**挂网交易** + **自主上架** + **维修报修**三合一。旧医美内容整包保留、默认隐藏，可一键切回对比。
+牙科设备**挂网展示** + **自主上架** + **维修报修**三合一。给私域客户直接用，**不需要服务器、不需要小程序审核**。
 
-## 🌐 在线演示（扫码即看）
+## 🚀 怎么给客户用（3 种方式，任选）
+
+| 方式 | 怎么做 | 适合 |
+| --- | --- | --- |
+| **发链接** | 微信里发 `https://zhaosirhi-cell.github.io/yayi/` | 单个客户/群里 |
+| **发扫码卡片** | 直接发 `demo/扫码卡片.png`（1080×1350，朋友圈/私聊都好看） | 朋友圈、名片、门店贴纸 |
+| **加到手机桌面** | 客户打开后 → Safari「分享→添加到主屏幕」/ 安卓浏览器「菜单→添加到主屏幕」 | 让客户长期留存，像 App 一样点开 |
+
+> 页面已做 PWA：加到桌面后有独立图标（牙翼）、全屏打开、断网也能看。
+
+## 💬 客户"能用"体现在哪（不需要后端）
+
+客户点「立即咨询」「立即报修」「我要卖机」时，页面会**生成一段格式化好的信息**（含设备编号、价格、链接、报修单号、故障描述），客户点「复制信息」→ 粘到微信发给你即可。也可以直接点「打电话」拨给客服。
+
+- **客服电话/微信在这里改**：`tools/demo/data.js` → 搜 `CONTACT`
+- 客户的报修记录会存在他自己手机上（我的订单里能看），你收到微信消息后线下派单
+
+## 🌐 线上地址
 
 | | 地址 |
 | --- | --- |
-| **演示页** | https://zhaosirhi-cell.github.io/yayi/ |
+| **应用** | https://zhaosirhi-cell.github.io/yayi/ |
 | **扫码页**（二维码放大展示） | https://zhaosirhi-cell.github.io/yayi/qr.html |
 | **仓库** | https://github.com/zhaosirhi-cell/yayi |
 
 ![二维码](./qr.png)
 
 ```
-demo/          ✅ 效果演示（单文件 H5，双击就能点）
-miniprogram/   ⏳ 小程序工程（仍是旧医美版，待演示定稿后同步）
+demo/          ✅ 可给客户用的 H5（PWA，单文件打包）
+miniprogram/   ⏳ 小程序工程（仍是旧医美版，待同步）
 prototype/     🎨 静态设计原型
-tools/         数据包 / 打包 / 自检脚本
+supabase/      真数据库表结构（以后要多人共享时用）
+tools/         数据包 / 打包 / 自检 / 推送脚本
 ```
 
 > ⚠️ 本机 `git push` 被网络阻断（github.com:443 连接重置），更新内容请用 API 方式推送：
 > ```bash
-> node tools/push-via-api.js zhaosirhi-cell yayi main
+> node tools/build-demo.js                              # 改完重新打包
+> node tools/push-via-api.js zhaosirhi-cell yayi main   # 走 API 推送，约 30 秒后线上更新
 > ```
-> 改完 `tools/demo/` 先 `node tools/build-demo.js` 重新打包，再执行上面的推送。
 
 ---
 

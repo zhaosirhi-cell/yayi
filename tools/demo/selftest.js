@@ -115,23 +115,24 @@ window.addEventListener('load', function () {
       await sleep(300)
       check('订单状态筛选（待上门 → 空态）', !!$('.od-empty'))
 
-      // 13. 内容域切换（旧医美仍可回看）
+      // 13. 内容域切换（仅开发者模式 ?dev=1 才出现）
       await goTo('#/mine')
-      click($('[data-act=switch-domain]'))
-      await sleep(180)
-      var opts = $$('.sheet-opt')
-      click(opts[1])
-      await sleep(280)
-      check('切换到旧医美内容域', window.__demoState.domain === 'aesthetic')
-      await goTo('#/home')
-      check('医美域显示旧内容', $('.b-tag').textContent.indexOf('医美') > -1)
-
-      // 切回牙科
-      await goTo('#/mine')
-      click($('[data-act=switch-domain]'))
-      await sleep(180)
-      click($$('.sheet-opt')[0])
-      await sleep(240)
+      if ($('[data-act=switch-domain]')) {
+        click($('[data-act=switch-domain]'))
+        await sleep(200)
+        click($$('.sheet-opt')[1])
+        await sleep(300)
+        check('切换到旧医美内容域', window.__demoState.domain === 'aesthetic')
+        await goTo('#/home')
+        check('医美域显示旧内容', $('.b-tag').textContent.indexOf('医美') > -1)
+        await goTo('#/mine')
+        click($('[data-act=switch-domain]'))
+        await sleep(200)
+        click($$('.sheet-opt')[0])
+        await sleep(240)
+      } else {
+        check('客户版已隐藏内容域切换（需 ?dev=1）', true)
+      }
 
       // 14. 总览墙
       await goTo('#/wall')

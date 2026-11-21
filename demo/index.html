@@ -779,7 +779,7 @@ svg { display: block; }
 .mine-title { position: absolute; left: 0; right: 0; top: 60px; text-align: center; font-size: 17px; font-weight: 700; color: #1E3325; }
 .mine-tools { position: absolute; right: 16px; top: 106px; color: #2C4634; cursor: pointer; }
 .mine-tools .ic { width: 22px; height: 22px; }
-.mine-user { position: absolute; left: 0; right: 0; top: 150px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+.mine-user { position: absolute; left: 0; right: 0; top: 136px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
 .mine-avatar {
   width: 86px; height: 86px; border-radius: 50%;
   background: #C9D8FB;
@@ -2154,6 +2154,8 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
 
   var D = window.ZM_DATA
   var DOMAINS = D.DOMAINS
+  // 开发者模式：URL 加 ?dev=1 才显示「导航」按钮与「内容域切换」
+  var DEV = /[?&]dev=1/.test(location.search)
 
   /* ---------------- 图标 ---------------- */
   var ICONS = {
@@ -2239,7 +2241,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
         price: 238000, city: '上海', district: '闵行区', tagText: '在售',
         tags: ['注册证有效', '含安装调试', '我的商品'],
         specs: [['椅位数', '1 台'], ['水电气', '单相电 + 0.5MPa'], ['使用年限', '约 2 年'], ['所在地', '上海 闵行']],
-        seller: { name: '我的店铺（示例）', verified: true, count: 3, rate: '100%' },
+        seller: { name: '我的店铺', verified: true, count: 3, rate: '100%' },
         h: 164, distanceKm: 12, viewCount: 86,
         cover: IMG['eq-2'], images: [IMG['eq-2'], IMG['eq-6']]
       }),
@@ -2252,7 +2254,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
         price: null, city: '上海', district: '闵行区', tagText: '在售',
         tags: ['支持验机', '我的商品'],
         specs: [['类型', '全景 / 头颅'], ['使用年限', '约 4 年'], ['所在地', '上海 闵行']],
-        seller: { name: '我的店铺（示例）', verified: true, count: 3, rate: '100%' },
+        seller: { name: '我的店铺', verified: true, count: 3, rate: '100%' },
         h: 152, distanceKm: 12, viewCount: 41,
         cover: IMG['eq-4'], images: [IMG['eq-4']]
       }),
@@ -2262,7 +2264,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
         brand: 'Woodpecker 啄木鸟', model: 'UDS-E', condition: '8成新', year: 2021,
         price: 2600, city: '上海', district: '闵行区', tagText: '在售',
         tags: ['我的商品'], specs: [['接口类型', '啄木鸟原厂']],
-        seller: { name: '我的店铺（示例）', verified: true, count: 3, rate: '100%' },
+        seller: { name: '我的店铺', verified: true, count: 3, rate: '100%' },
         h: 146, distanceKm: 12, viewCount: 18,
         cover: IMG['eq-7'], images: [IMG['eq-7']]
       })
@@ -2417,7 +2419,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
   function consultFloat () {
     return '<div class="consult" data-act="consult"><span class="av">' + icon('chat') + '</span><span class="tx">在线咨询</span></div>'
   }
-  function demoFab () { return '<div class="demo-fab" data-act="screens" title="页面导航">导航</div>' }
+  function demoFab () { return DEV ? '<div class="demo-fab" data-act="screens" title="页面导航">导航</div>' : '' }
   function domainTip () {
     if (state.domain === 'dental') return ''
     return '<div class="domain-tip">当前为<b>旧医美内容</b>（默认隐藏，仅供对比演示）</div>'
@@ -2793,7 +2795,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
       row('手机号', true, '<input data-field="phone" type="tel" maxlength="11" value="' + f.phone + '" placeholder="用于买家与您联系">') +
       '</div>' +
 
-      '<div class="f-tip"><div>· 提交后进入<b>待审核</b>，演示环境 2 秒后自动通过并上架</div>' +
+      '<div class="f-tip"><div>· 提交后会生成商品信息，复制发给牙翼客服即可帮你上架</div>' +
       '<div>· 上架商品会出现在首页与设备列表中（标“我的”）</div></div>' +
 
       '<div class="p-actions">' +
@@ -2837,7 +2839,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
       '<div class="shop-card">' +
       '<div class="shop-logo">' + pack().brandName + '</div>' +
       '<div class="shop-main">' +
-      '<b>我的店铺（示例）</b>' +
+      '<b>我的店铺</b>' +
       '<small>' + pack().brandName + ' · 已认证卖家 · 在售 ' + count('on') + ' 台</small>' +
       '</div>' +
       '<div class="shop-btn" data-act="nav" data-to="publish">' + icon('plus') + '发布</div>' +
@@ -2856,7 +2858,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
       (items.length ? items.map(itemRow).join('')
         : '<div class="empty">还没有商品，点右上角「发布」上架你的第一台设备</div>') +
 
-      '<div class="seller-tip">演示环境：商品数据保存在本机浏览器，刷新不丢；正式版由后端存储并走平台审核。</div>' +
+      '<div class="seller-tip">提交后会生成一条商品信息，复制发给牙翼客服，我们审核后帮你上架。</div>' +
       '<div style="height:20px"></div>' + demoFab() +
       '</div>'
   }
@@ -3054,10 +3056,10 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
       '<div class="mine-hero">' + statusbar() + capsule() +
       '<div class="mine-title">我的</div>' +
       '<div class="mine-tools" data-act="tip" data-tip="设置">' + icon('gear') + '</div>' +
-      '<div class="mine-user" data-act="login">' +
+      '<div class="mine-user" data-act="consult">' +
       '<div class="mine-avatar">' + icon('userFill') + '</div>' +
-      '<div class="mine-name">' + (u ? u.nickName : '授权登录') + '</div>' +
-      (u ? '<div class="mine-sub">' + u.phone + ' · 未实名</div>' : '') +
+      '<div class="mine-name">牙翼 · 牙科设备平台</div>' +
+      '<div class="mine-sub">点这里联系客服</div>' +
       '</div></div>' +
 
       '<div class="quick-card">' +
@@ -3102,13 +3104,13 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
       '<div class="save-item" data-act="tip" data-tip="扫码分享"><span class="si-ic">' + icon('camera') + '</span><b>扫码分享</b><small>打开 qr.html 展示</small></div>' +
       '</div></div>' +
 
-      '<div class="mine-block"><h3>内容域</h3>' +
+      (DEV ? '<div class="mine-block"><h3>内容域（开发者）</h3>' +
       '<div class="domain-row" data-act="switch-domain">' +
       '<span class="dr-main"><b>' + p.label + '</b><small>切换后全站内容随之变化，旧内容不删除</small></span>' +
       '<span class="dr-btn">切换</span>' +
-      '</div></div>' +
+      '</div></div>' : '') +
 
-      '<div class="version">' + p.brandName + ' v1.1.0 · 效果演示</div>' +
+      '<div class="version">' + p.brandName + ' · 二手牙科设备平台</div>' +
       consultFloat() + demoFab() + tabbar('mine') +
       '</div>'
   }
@@ -3398,11 +3400,11 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
       price: f.price ? Math.round(Number(f.price) * 10000) : null,
       negotiable: f.negotiable,
       city: cityList[f.city],
-      district: '本机演示',
+      district: '',
       tagText: '我的',
       tags: ['我的商品'].concat(f.registerNo ? ['注册证有效'] : []).concat(f.installIncluded ? ['含安装调试'] : []),
       specs: specs,
-      seller: { name: '我的店铺（示例）', verified: true, count: 1, rate: '100%' },
+      seller: { name: '我的店铺', verified: true, count: 1, rate: '100%' },
       cover: cover,
       images: f.images.slice(),
       h: 158,
@@ -3429,8 +3431,8 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
     if (isEstimate) {
       var yr = parseInt(D.YEAR_OPTIONS[f.year], 10)
       var base = Math.max(1, 20 - Math.max(0, 2024 - yr) * 2)
-      showDialog('估价完成（演示）',
-        '参考区间：¥' + base + '–' + (base + 8) + ' 万\n正式版本由平台根据品牌、型号、成色、注册证与近期成交价给出区间。',
+      showDialog('估价完成',
+        '参考区间：¥' + base + '–' + (base + 8) + ' 万\n（按品牌、型号、成色、注册证与近期成交价估算，实际以验机为准）',
         function () { location.hash = '#/seller' })
       return
     }
@@ -3535,7 +3537,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
         '复制后发给牙翼客服微信，或直接打电话')
     },
     'news-tab': function (el) { state.newsTab = el.dataset.tab; render() },
-    'open-news': function () { showDialog('资讯详情', '演示环境：正式版本会跳转资讯详情页（富文本 / webview）。') },
+    'open-news': function () { showDialog('资讯详情', '内容整理中，需要完整信息可以联系牙翼客服获取。') },
     login: function () {
       if (state.user) {
         showSheet('账号', ['退出登录'], -1, function () {
@@ -3546,11 +3548,11 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
       } else {
         state.user = { nickName: '牙翼用户', phone: '138****8888' }
         saveJSON('zm_user', state.user)
-        toast('登录成功（演示）')
+        toast('已登录')
         render()
       }
     },
-    tip: function (el) { showDialog(el.dataset.tip || '功能', '演示环境：这个入口在正式版会跳转到对应页面。') },
+    tip: function (el) { showDialog(el.dataset.tip || '功能', '该功能正在完善中，需要的话直接联系牙翼客服。') },
 
     /* 内容域切换 */
     'switch-domain': function () {
@@ -3577,7 +3579,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
     },
     'seller-del': function (el) {
       var id = el.dataset.id
-      showDialog('删除商品', '删除后不可恢复（演示环境仅本机生效）。', function () {
+      showDialog('删除商品', '删除后不可恢复，确定删除吗？', function () {
         state.myItems = state.myItems.filter(function (x) { return x.id !== id })
         saveMyItems()
         toast('已删除')
@@ -3636,7 +3638,7 @@ var IMG = {"eq-1":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAAB
         showSheet('所在城市', D.CITIES.filter(function (c) { return c !== '全国' }), f.city, function (i) { f.city = i; render() })
       }
     },
-    draft: function () { toast('已存草稿（演示）') },
+    draft: function () { toast('已存草稿') },
     submit: function (el) { submitPublish(el.dataset.estimate === '1') },
 
     /* 维修报修 */

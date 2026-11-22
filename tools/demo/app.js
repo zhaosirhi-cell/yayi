@@ -951,7 +951,7 @@
       '<div class="save-row">' +
       '<div class="save-item" data-act="add-home"><span class="si-ic">' + icon('plus') + '</span><b>添加到桌面</b><small>像 App 一样打开</small></div>' +
       '<div class="save-item" data-act="copy-link"><span class="si-ic">' + icon('doclist') + '</span><b>复制链接</b><small>发给同事/客户</small></div>' +
-      '<div class="save-item" data-act="tip" data-tip="扫码分享"><span class="si-ic">' + icon('camera') + '</span><b>扫码分享</b><small>打开 qr.html 展示</small></div>' +
+      '<div class="save-item" data-act="copy-wx"><span class="si-ic">' + icon('chat') + '</span><b>加客服微信</b><small>' + CONTACT.wechat + '</small></div>' +
       '</div></div>' +
 
       (DEV ? '<div class="mine-block"><h3>内容域（开发者）</h3>' +
@@ -1069,8 +1069,15 @@
     overlay.innerHTML =
       '<div class="lead">' +
       '<div class="lead-title">' + title + '</div>' +
-      '<div class="lead-tip">' + (tip || '复制下面的信息，发给牙翼客服微信即可') + '</div>' +
+      '<div class="lead-tip">' + (tip || '复制下面的信息，加客服微信发给她，秒回价格与实拍') + '</div>' +
       '<textarea class="lead-text" readonly id="leadText">' + text + '</textarea>' +
+      (CONTACT.wechat
+        ? '<div class="lead-wx">' +
+          '<span class="lw-label">加客服微信</span>' +
+          '<b class="lw-num" id="leadWx">' + CONTACT.wechat + '</b>' +
+          '<span class="lw-copy" data-lead="copy-wx">复制微信号</span>' +
+          '</div>'
+        : '') +
       '<div class="lead-ops">' +
       '<span class="lead-btn" data-lead="copy">复制信息</span>' +
       '<a class="lead-btn primary" href="tel:' + CONTACT.phone + '">直接打电话</a>' +
@@ -1088,6 +1095,12 @@
           if (el) { el.focus(); el.select() }
           toast('长按上面的文字全选后复制')
         })
+        return
+      }
+      if (t.getAttribute && t.getAttribute('data-lead') === 'copy-wx') {
+        copyText(CONTACT.wechat).then(function () {
+          toast('微信号已复制，去微信搜索添加')
+        }).catch(function () { toast('长按微信号复制') })
         return
       }
       if (t === overlay || (t.getAttribute && t.getAttribute('data-lead') === 'close')) {
@@ -1312,7 +1325,7 @@
     state.form = null
     state.editingId = null
 
-    showLead('商品信息已生成', leadDeviceSellText(item), '把这条信息发给牙翼客服（微信），我们审核后帮你上架')
+    showLead('商品信息已生成', leadDeviceSellText(item), '把这条信息发给客服微信 ' + CONTACT.wechat + '，我们审核后帮你上架')
 
     setTimeout(function () {
       var target = state.myItems.filter(function (x) { return x.id === item.id })[0]
@@ -1380,11 +1393,11 @@
       var id = el && el.dataset ? el.dataset.id : ''
       if (id) {
         var dv = deviceById(id)
-        if (dv) return showLead('咨询这台设备', leadDeviceText(dv), '复制后发给牙翼客服微信，或直接打电话')
+        if (dv) return showLead('咨询这台设备', leadDeviceText(dv), '复制信息后加微信 ' + CONTACT.wechat + ' 发送，也可直接打电话')
       }
       showLead('在线咨询',
         '【在线咨询】\n你好，我想咨询牙翼平台上的设备，方便的时候请联系我。',
-        '复制后发给牙翼客服微信，或直接打电话')
+        '复制信息后加微信 ' + CONTACT.wechat + ' 发送，也可直接打电话')
     },
     'news-tab': function (el) { state.newsTab = el.dataset.tab; render() },
     'open-news': function () { showDialog('资讯详情', '内容整理中，需要完整信息可以联系牙翼客服获取。') },
@@ -1551,7 +1564,7 @@
       saveJSON('zm_orders', state.orders)
       state.repair = { address: f.address, product: '', time: '', desc: '', images: [] }
       showLead('报修信息已生成', leadRepairText(state.orders[0]),
-        '把这条信息发给牙翼客服（微信），我们 2 小时内联系你',
+        '把这条信息发给客服微信 ' + CONTACT.wechat + '，我们 2 小时内联系你',
         function () { location.hash = '#/repair-orders' })
     },
     'order-tab': function (el) { state.orderTab = el.dataset.k; render() },
@@ -1577,6 +1590,13 @@
       showDialog('添加到手机桌面',
         'iPhone：用 Safari 打开 → 底部「分享」按钮 → 添加到主屏幕\n\n安卓：用浏览器打开 → 右上角菜单 → 添加到主屏幕 / 添加到桌面\n\n微信内打开的话，先点右上角「···」→ 在浏览器中打开，再按上面操作。',
         null, '知道了')
+    },
+    'copy-wx': function () {
+      copyText(CONTACT.wechat).then(function () {
+        toast('微信号已复制：' + CONTACT.wechat)
+      }).catch(function () {
+        showLead('加客服微信', '微信号：' + CONTACT.wechat, '长按上面的微信号复制，然后去微信搜索添加', null)
+      })
     },
     'copy-link': function () {
       var url = location.href.split('#')[0]

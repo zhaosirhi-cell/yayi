@@ -13,6 +13,8 @@ const IMG_DIR = path.join(ROOT, 'miniprogram', 'assets', 'images')
 
 const style = fs.readFileSync(path.join(DEMO_DIR, 'style.css'), 'utf8') + '\n' +
   fs.readFileSync(path.join(DEMO_DIR, 'style-pages.css'), 'utf8')
+const configJs = fs.readFileSync(path.join(DEMO_DIR, 'config.js'), 'utf8')
+const dbJs = fs.readFileSync(path.join(DEMO_DIR, 'db.js'), 'utf8')
 const dataJs = fs.readFileSync(path.join(DEMO_DIR, 'data.js'), 'utf8')
 const appJs = fs.readFileSync(path.join(DEMO_DIR, 'app.js'), 'utf8')
 
@@ -53,6 +55,12 @@ ${style}
 /* 内联占位图（${Object.keys(imgs).length} 张） */
 var IMG = ${JSON.stringify(imgs)};
 
+/* 后端配置（填了才能云端共享） */
+${configJs}
+;
+/* 数据层（Supabase REST） */
+${dbJs}
+;
 /* 内容域数据包（牙科 / 旧医美） */
 ${dataJs}
 ;

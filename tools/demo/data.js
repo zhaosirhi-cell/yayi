@@ -328,7 +328,7 @@
         { name: '整体转让', icon: 'doclist', cls: 'cat-6', to: 'list?cat=6' }
       ],
       quickActions: [
-        { name: '我要卖机', icon: 'plus', desc: '自主上架设备', to: 'publish' },
+        { name: '我要卖机', icon: 'plus', desc: '提交设备信息', to: 'sell' },
         { name: '免费估价', icon: 'money', desc: '先估价再挂牌', to: 'publish?from=estimate' },
         { name: '维修报修', icon: 'wrench', desc: '48 小时上门', to: 'repair' }
       ],

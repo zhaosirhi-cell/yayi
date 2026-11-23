@@ -7,6 +7,9 @@
   // 开发者模式：URL 加 ?dev=1 才显示「导航」按钮与「内容域切换」
   var DEV = /[?&]dev=1/.test(location.search)
 
+  // 后端（填了 config.js 才会真正启用云端共享）
+  var DB = window.ZM_DB || { ready: false, logged: false }
+
   /* ---------------- 图标 ---------------- */
   var ICONS = {
     home: '<path d="M3.4 10.3 12 3.6l8.6 6.7V20a.9.9 0 0 1-.9.9h-4.5v-6.2H9.3v6.2H4.3a.9.9 0 0 1-.9-.9z"/>',
@@ -75,7 +78,11 @@
     },
     orders: loadJSON('zm_orders', null),
     orderTab: 'all',
-    orderKeyword: ''
+    orderKeyword: '',
+    remoteDevices: null,   // 云端设备（null = 未启用/未加载）
+    leads: [],
+    sellForm: null,
+    ownerLogged: false
   }
   if (!DOMAINS[state.domain]) state.domain = 'dental'
 
@@ -160,8 +167,58 @@
 
   function pack () { return DOMAINS[state.domain] }
 
+  /* 云端数据（Supabase）→ 页面用的设备结构 */
+  function fromRow (r) {
+    return {
+      id: 'D' + r.id,
+      remoteId: r.id,
+      remote: true,
+      domain: 'dental',
+      title: r.title,
+      brand: r.brand || '',
+      model: r.model || '',
+      categoryId: r.category_id || 0,
+      categoryName: r.category_name || '其他',
+      condition: r.condition || '',
+      year: r.year || null,
+      useYears: r.use_years || '',
+      registerNo: r.register_no || '',
+      installIncluded: r.install_included !== false,
+      warranty: r.warranty || '',
+      price: r.price === null || r.price === undefined ? null : Number(r.price),
+      negotiable: r.negotiable !== false,
+      city: r.city || '',
+      district: r.district || '',
+      isPick: !!r.is_pick,
+      tagText: r.is_pick ? '甄选' : '在售',
+      tags: r.tags || [],
+      specs: r.specs || [],
+      desc: r.desc_lines || [],
+      h: 158,
+      distanceKm: 0,
+      viewCount: r.view_count || 0,
+      status: r.status || 'on',
+      seller: { name: '牙翼', verified: true, count: 1, rate: '100%' },
+      cover: r.cover || (r.images && r.images[0]) || IMG['eq-1'],
+      images: (r.images && r.images.length) ? r.images : [r.cover || IMG['eq-1']],
+      createdAt: r.created_at || ''
+    }
+  }
+
+  function bootRemote (cb) {
+    if (!DB.ready) return
+    DB.listDevices().then(function (rows) {
+      state.remoteDevices = (rows || []).map(fromRow)
+      if (cb) cb()
+      else render()
+    }).catch(function (e) {
+      console.warn('[牙翼] 云端读取失败：' + e.message)
+    })
+  }
+
   /** 商城内可见商品 = 我上架中的 + 平台已有的（同内容域） */
   function catalog () {
+    if (state.remoteDevices) return state.remoteDevices
     var mine = state.myItems.filter(function (it) {
       return it.mine && it.domain === state.domain && it.status === 'on'
     })
@@ -237,6 +294,10 @@
     return { colA: colA, colB: colB }
   }
   function deviceById (id) {
+    if (state.remoteDevices) {
+      var hit = state.remoteDevices.filter(function (d) { return d.id === id })[0]
+      if (hit) return hit
+    }
     var all = catalog().concat(state.myItems)
     return all.filter(function (d) { return d.id === id })[0] || catalog()[0]
   }
@@ -543,7 +604,7 @@
       condition: 2, year: 2, useYears: '', registerNo: '',
       installIncluded: true, warranty: '',
       price: '', negotiable: true, city: 0,
-      contact: '', phone: '', params: ['', '']
+      contact: '', phone: '', params: ['', ''], files: []
     }
   }
 
@@ -551,7 +612,26 @@
     var p = pack()
     var isEstimate = params && params.from === 'estimate'
     var editId = params && params.edit
-    if (editId) {
+    if (editId && String(editId).charAt(0) === 'D' && state.remoteDevices) {
+      var rd = state.remoteDevices.filter(function (x) { return x.id === editId })[0]
+      if (rd) {
+        state.editingId = editId
+        state.form = {
+          images: rd.images.slice(),
+          files: [],
+          title: rd.title, cat: Math.max(0, (rd.categoryId || 1) - 1),
+          brand: Math.max(0, p.brands.filter(function (b) { return b !== '全部品牌' }).indexOf(rd.brand)),
+          model: rd.model, condition: Math.max(0, D.CONDITION_OPTIONS.indexOf(rd.condition)),
+          year: Math.max(0, D.YEAR_OPTIONS.indexOf((rd.year || 2024) + ' 年')),
+          useYears: rd.useYears || '', registerNo: rd.registerNo || '',
+          installIncluded: rd.installIncluded !== false, warranty: rd.warranty || '',
+          price: rd.price ? String(rd.price / 10000) : '', negotiable: rd.negotiable !== false,
+          city: Math.max(0, D.CITIES.filter(function (c) { return c !== '全国' }).indexOf(rd.city)),
+          contact: '', phone: '',
+          params: [(rd.specs[0] ? rd.specs[0][1] : ''), (rd.specs[1] ? rd.specs[1][1] : '')]
+        }
+      }
+    } else if (editId) {
       if (state.editingId !== editId || !state.form) {
         var it = state.myItems.filter(function (x) { return x.id === editId })[0]
         if (it) {
@@ -657,6 +737,7 @@
 
   /* ---------------- 我的店铺（卖家中心） ---------------- */
   function pageSeller () {
+    if (DB.ready) return pageSellerRemote()
     var items = state.myItems.filter(function (it) { return it.mine && it.domain === state.domain })
     var count = function (s) { return items.filter(function (i) { return i.status === s }).length }
     var views = items.reduce(function (a, b) { return a + (b.viewCount || 0) }, 0)
@@ -710,6 +791,151 @@
 
       '<div class="seller-tip">提交后会生成一条商品信息，复制发给牙翼客服，我们审核后帮你上架。</div>' +
       '<div style="height:20px"></div>' + demoFab() +
+      '</div>'
+  }
+
+  /* ---------------- 我要卖机（线索） ---------------- */
+  function pageSell () {
+    if (!state.sellForm) {
+      state.sellForm = { title: '', brand: '', model: '', condition: '', price: '', city: '', contact: '', phone: '', note: '', images: [], files: [] }
+    }
+    var f = state.sellForm
+    function row (label, req, inner) {
+      return '<div class="f-row"><span class="f-label">' + (req ? '<em>*</em>' : '') + label + '</span>' + inner + '</div>'
+    }
+    return '<div class="page page-plain" style="padding-bottom:96px">' +
+      '<div class="p-top">' + statusbar() + capsule() +
+      '<div class="nav-title"><span class="nav-back" data-act="back">' + icon('back') + '</span>我要卖机</div>' +
+      '</div>' +
+      '<div class="estimate-tip">把你的闲置设备信息填好，牙翼会主动联系你报价、帮你挂到平台上卖。</div>' +
+
+      '<div class="f-card"><div class="f-title">设备图片<small>最多 4 张</small></div>' +
+      '<div class="upload">' +
+      f.images.map(function (src, i) {
+        return '<div class="u-item"><img src="' + src + '" alt="">' +
+          '<span class="u-del" data-act="del-sell-img" data-i="' + i + '">' + icon('close') + '</span></div>'
+      }).join('') +
+      (f.images.length < 4 ? '<div class="u-add" data-act="upload-sell">' + icon('plus') + '<span>' + f.images.length + '/4</span></div>' : '') +
+      '</div></div>' +
+
+      '<div class="f-card"><div class="f-title">设备信息</div>' +
+      row('设备名称', true, '<input data-field="s_title" value="' + f.title + '" placeholder="如：卡瓦 E70 牙科综合治疗台">') +
+      row('品牌型号', false, '<input data-field="s_brand" value="' + f.brand + '" placeholder="如：卡瓦 Estetica E70">') +
+      row('成色', false, '<input data-field="s_condition" value="' + f.condition + '" placeholder="如：9 成新">') +
+      row('期望价格', false, '<input data-field="s_price" type="number" value="' + f.price + '" placeholder="不填可议价"><span class="f-unit">万元</span>') +
+      row('所在城市', false, '<input data-field="s_city" value="' + f.city + '" placeholder="如：郑州">') +
+      row('备注', false, '<input data-field="s_note" value="' + f.note + '" placeholder="使用年限、故障情况等">') +
+      '</div>' +
+
+      '<div class="f-card"><div class="f-title">联系方式</div>' +
+      row('称呼', true, '<input data-field="s_contact" value="' + f.contact + '" placeholder="怎么称呼您">') +
+      row('手机号', true, '<input data-field="s_phone" type="tel" maxlength="11" value="' + f.phone + '" placeholder="方便我们联系您">') +
+      '</div>' +
+
+      '<div class="f-tip"><div>· 提交后牙翼会在 24 小时内联系你</div>' +
+      '<div>· 价位合适的话，我们直接现金收购，你也可以选择寄卖</div></div>' +
+
+      '<div class="p-actions"><div class="btn-solid" data-act="submit-lead">提交给牙翼</div></div>' +
+      '</div>'
+  }
+
+  /* ---------------- 店主登录 ---------------- */
+  function showLogin (after) {
+    closeOverlay()
+    overlay = document.createElement('div')
+    overlay.className = 'mask center'
+    overlay.innerHTML = '<div class="lead" style="width:300px">' +
+      '<div class="lead-title">店主登录</div>' +
+      '<div class="lead-tip">只有店主能上架设备</div>' +
+      '<input id="lgEmail" class="lg-input" type="email" placeholder="邮箱" autocomplete="username">' +
+      '<input id="lgPass" class="lg-input" type="password" placeholder="密码" autocomplete="current-password">' +
+      '<div class="lead-ops" style="margin-top:14px">' +
+      '<span class="lead-btn" data-lead="lg-close">取消</span>' +
+      '<span class="lead-btn primary" data-lead="lg-go">登录</span>' +
+      '</div></div>'
+    document.body.appendChild(overlay)
+    overlay.addEventListener('click', function (e) {
+      var a = e.target.getAttribute && e.target.getAttribute('data-lead')
+      if (a === 'lg-close' || e.target === overlay) { closeOverlay(); return }
+      if (a === 'lg-go') {
+        var em = document.getElementById('lgEmail').value.trim()
+        var pw = document.getElementById('lgPass').value
+        if (!em || !pw) return toast('请输入邮箱和密码')
+        DB.login(em, pw).then(function () {
+          closeOverlay()
+          toast('登录成功')
+          state.ownerLogged = true
+          bootRemote(function () { if (after) after(); else render() })
+        }).catch(function (err) { toast(err.message) })
+      }
+    })
+  }
+
+  /* ---------------- 云端店铺管理 ---------------- */
+  function pageSellerRemote () {
+    var items = state.remoteDevices || []
+    var on = items.filter(function (i) { return i.status === 'on' }).length
+    var off = items.length - on
+    var leads = state.leads || []
+
+    function itemRow (it) {
+      var acts = '<span class="op-btn" data-act="' + (it.status === 'on' ? 'r-off' : 'r-on') + '" data-id="' + it.remoteId + '">' +
+        icon(it.status === 'on' ? 'down' : 'up') + (it.status === 'on' ? '下架' : '上架') + '</span>' +
+        '<span class="op-btn" data-act="r-edit" data-id="' + it.remoteId + '">' + icon('edit') + '编辑</span>' +
+        '<span class="op-btn danger" data-act="r-del" data-id="' + it.remoteId + '">' + icon('trash') + '删除</span>'
+      return '<div class="sitem">' +
+        '<div class="sitem-media" data-act="nav" data-to="detail?id=' + it.id + '">' +
+        '<img src="' + it.cover + '" alt="">' +
+        '<span class="st st-' + (it.status === 'on' ? 'on' : 'off') + '">' + (it.status === 'on' ? '上架中' : '已下架') + '</span>' +
+        '</div>' +
+        '<div class="sitem-main">' +
+        '<div class="sitem-title">' + it.title + '</div>' +
+        '<div class="sitem-sub">' + subText(it) + ' · ' + (it.city || '') + '</div>' +
+        '<div class="sitem-price">' + priceNum(it.price) + ' <small>浏览 ' + (it.viewCount || 0) + '</small></div>' +
+        '<div class="sitem-ops">' + acts + '</div>' +
+        '</div></div>'
+    }
+
+    var leadsHtml = ''
+    if (DB.logged) {
+      leadsHtml = '<div class="sec-head"><h3>卖机线索<span style="font-size:11px;color:#8C929B;font-weight:400">（' + leads.length + '）</span></h3></div>' +
+        (leads.length ? leads.map(function (l) {
+          return '<div class="sitem" style="align-items:flex-start">' +
+            '<div class="sitem-main">' +
+            '<div class="sitem-title">' + (l.title || '未填写设备名') + (l.handled ? ' <span style="color:#2B7A4B;font-size:11px">已处理</span>' : '') + '</div>' +
+            '<div class="sitem-sub">' + [l.brand, l.condition, l.city].filter(Boolean).join(' · ') + '</div>' +
+            '<div class="sitem-sub">' + (l.contact || '') + ' ' + (l.phone || '') + (l.price ? ' · 期望 ' + Math.round(l.price / 1000) / 10 + ' 万' : '') + '</div>' +
+            (l.note ? '<div class="od-desc" style="margin-top:8px">' + l.note + '</div>' : '') +
+            '<div class="sitem-ops">' +
+            '<a class="op-btn" href="tel:' + (l.phone || '') + '">' + icon('chat') + '打电话</a>' +
+            (l.handled ? '' : '<span class="op-btn" data-act="lead-done" data-id="' + l.id + '">' + icon('check') + '标记已联系</span>') +
+            '</div></div></div>'
+        }).join('') : '<div class="empty" style="padding:30px 0">还没有卖机线索</div>')
+    }
+
+    return '<div class="page page-plain">' +
+      '<div class="s-top">' + statusbar() + capsule() +
+      '<div class="nav-title"><span class="nav-back" data-act="back">' + icon('back') + '</span>我的店铺</div>' +
+      '</div>' +
+      (DB.logged
+        ? '<div class="shop-card"><div class="shop-logo">牙翼</div>' +
+          '<div class="shop-main"><b>牙翼 · 官方店铺</b><small>已登录 · 在线 ' + on + ' 台</small></div>' +
+          '<div class="shop-btn" data-act="nav" data-to="publish">' + icon('plus') + '上架</div></div>' +
+          '<div class="stat-row">' +
+          '<div class="stat"><b>' + on + '</b><span>上架中</span></div>' +
+          '<div class="stat"><b>' + off + '</b><span>已下架</span></div>' +
+          '<div class="stat"><b>' + leads.filter(function (l) { return !l.handled }).length + '</b><span>待联系线索</span></div>' +
+          '<div class="stat"><b>' + items.reduce(function (a, b) { return a + (b.viewCount || 0) }, 0) + '</b><span>总浏览</span></div>' +
+          '</div>'
+        : '<div class="login-bar"><span>未登录，只有登录后能管理设备</span>' +
+          '<span class="lb-btn" data-act="owner-login">店主登录</span></div>') +
+
+      '<div class="sec-head"><h3>在售设备</h3>' +
+      (DB.logged ? '<span class="more" data-act="nav" data-to="publish">新增设备' + icon('plus') + '</span>' : '') + '</div>' +
+      (items.length ? items.map(itemRow).join('') : '<div class="empty">还没有设备，点右上角「上架」添加第一台</div>') +
+      leadsHtml +
+      (DB.logged ? '<div class="seller-tip" data-act="owner-logout">退出登录</div>' : '') +
+      '<div style="height:20px"></div>' +
       '</div>'
   }
 
@@ -1163,7 +1389,7 @@
   var SCREENS = {
     home: pageHome, pick: pagePick, list: pageList, detail: pageDetail,
     publish: pagePublish, seller: pageSeller, search: pageSearch,
-    repair: pageRepair, 'repair-orders': pageOrders,
+    repair: pageRepair, 'repair-orders': pageOrders, sell: pageSell,
     news: pageNews, mine: pageMine, wall: pageWall
   }
 
@@ -1213,6 +1439,11 @@
     document.querySelectorAll('[data-field]').forEach(function (el) {
       el.addEventListener('input', function () {
         var k = el.dataset.field
+        if (k.indexOf('s_') === 0) {
+          if (!state.sellForm) return
+          state.sellForm[k.slice(2)] = el.value
+          return
+        }
         if (k === 'p0' || k === 'p1') state.form.params[k === 'p0' ? 0 : 1] = el.value
         else state.form[k] = el.value
       })
@@ -1283,7 +1514,74 @@
     })
   }
 
+  function toRow (form) {
+    var p = pack()
+    var cats = p.cats.filter(function (c) { return c.id > 0 })
+    var brands = p.brands.filter(function (b) { return b !== '全部品牌' })
+    var cityList = D.CITIES.filter(function (c) { return c !== '全国' })
+    var cat = cats[form.cat]
+    var tmpl = p.paramTemplates[cat.id] || [['参数一', ''], ['参数二', '']]
+    var specs = tmpl.map(function (t, i) { return [t[0], form.params[i] || ''] })
+      .filter(function (x) { return x[1] })
+    if (cityList[form.city]) specs.push(['所在地', cityList[form.city]])
+    return {
+      title: form.title.trim(),
+      category_id: cat.id,
+      category_name: cat.name,
+      brand: brands[form.brand],
+      model: form.model,
+      condition: D.CONDITION_OPTIONS[form.condition],
+      year: parseInt(D.YEAR_OPTIONS[form.year], 10),
+      use_years: form.useYears,
+      register_no: form.registerNo,
+      install_included: form.installIncluded,
+      warranty: form.warranty,
+      price: form.price ? Math.round(Number(form.price) * 10000) : null,
+      negotiable: form.negotiable,
+      city: cityList[form.city],
+      specs: specs,
+      tags: (form.registerNo ? ['注册证有效'] : []).concat(form.installIncluded ? ['含安装调试'] : []),
+      desc_lines: [
+        '1. ' + D.YEAR_OPTIONS[form.year] + ' 出厂，正规渠道采购，手续齐全可开发票。',
+        '2. 设备运行正常，已做整机保养；' + (form.installIncluded ? '含安装调试。' : '不含安装，可协助安排。'),
+        '3. 支持上门看机、第三方验机，' + (form.negotiable ? '价格可议。' : '一口价。')
+      ],
+      status: 'on'
+    }
+  }
+
+  function submitPublishRemote (isEstimate) {
+    var f = state.form
+    if (!DB.logged) { showLogin(function () { submitPublishRemote(isEstimate) }); return }
+    if (!f.title.trim()) return toast('请填写商品标题')
+    if (!isEstimate && !String(f.price).trim()) return toast('请填写期望售价')
+
+    var row = toRow(f)
+    var jobs = (f.files || []).map(function (file) { return DB.uploadImage(file) })
+
+    toast('正在保存…')
+    Promise.all(jobs).then(function (urls) {
+      row.images = urls
+      row.cover = urls[0] || ''
+      if (state.editingId) {
+        var rid = String(state.editingId).replace(/^D/, '')
+        return DB.updateDevice(rid, row).then(function () { return 'updated' })
+      }
+      return DB.createDevice(row).then(function () { return 'created' })
+    }).then(function (what) {
+      state.form = null
+      state.editingId = null
+      bootRemote(function () {
+        toast(what === 'updated' ? '已保存' : '已上架')
+        location.hash = '#/seller'
+      })
+    }).catch(function (e) {
+      toast(e.message || '保存失败')
+    })
+  }
+
   function submitPublish (isEstimate) {
+    if (DB.ready) return submitPublishRemote(isEstimate)
     var f = state.form
     if (!f.images.length && !isEstimate) return toast('请至少上传 1 张商品图片')
     if (!f.title.trim()) return toast('请填写商品标题')
@@ -1458,7 +1756,12 @@
     'clear-history': function () { state.history = []; saveJSON('zm_history', []); render() },
 
     /* 发布表单 */
-    'del-img': function (el) { state.form.images.splice(Number(el.dataset.i), 1); render() },
+    'del-img': function (el) {
+      var i = Number(el.dataset.i)
+      state.form.images.splice(i, 1)
+      if (state.form.files) state.form.files.splice(i, 1)
+      render()
+    },
     upload: function () {
       var inp = document.createElement('input')
       inp.type = 'file'
@@ -1467,11 +1770,13 @@
       inp.addEventListener('change', function () {
         var files = Array.prototype.slice.call(inp.files || []).slice(0, 9 - state.form.images.length)
         if (!files.length) return
+        if (!state.form.files) state.form.files = []
         var done = 0
         files.forEach(function (fl) {
           var fr = new FileReader()
           fr.onload = function () {
             state.form.images.push(fr.result)
+            state.form.files.push(fl)
             if (++done === files.length) render()
           }
           fr.readAsDataURL(fl)
@@ -1553,6 +1858,27 @@
       if (!f.product) return toast('请选择维修产品')
       if (!f.time) return toast('请选择联系时间')
       if (!f.desc.trim()) return toast('请描述设备故障情况')
+      if (DB.ready) {
+        var d0 = new Date()
+        var no = 'WX' + d0.getFullYear() + ('0' + (d0.getMonth() + 1)).slice(-2) + ('0' + d0.getDate()).slice(-2) + ('000' + Math.floor(Math.random() * 999)).slice(-3)
+        DB.createRepair({
+          order_no: no,
+          product: f.product,
+          address: f.address.title,
+          contact: f.address.contact,
+          phone: f.address.phone,
+          contact_time: f.time,
+          description: f.desc.trim(),
+          description_note: f.desc.trim(),
+          status: 'pending'
+        }).then(function () {
+          showLead('报修已提交', '【维修报修】\n单号：' + no + '\n设备：' + f.product + '\n地址：' + f.address.title + '\n联系时间：' + f.time + '\n故障：' + f.desc.trim(),
+            '已同步给牙翼客服，2 小时内联系你。也可以加微信 ' + CONTACT.wechat + ' 直接沟通',
+            function () { location.hash = '#/home' })
+          state.repair = { address: f.address, product: '', time: '', desc: '', images: [] }
+        }).catch(function (e) { toast(e.message || '提交失败') })
+        return
+      }
       var d = new Date()
       var oid = 'WX' + d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2) +
         ('000' + (state.orders.length + 1)).slice(-4)
@@ -1598,6 +1924,88 @@
         showLead('加客服微信', '微信号：' + CONTACT.wechat, '长按上面的微信号复制，然后去微信搜索添加', null)
       })
     },
+    'owner-login': function () { showLogin() },
+    'owner-logout': function () {
+      showDialog('退出登录', '退出后将看不到线索与设备管理。', function () {
+        DB.logout()
+        state.leads = []
+        toast('已退出')
+        render()
+      }, '确认退出')
+    },
+    'r-on': function (el) { DB.updateDevice(el.dataset.id, { status: 'on' }).then(function () { bootRemote(); toast('已上架') }).catch(function (e) { toast(e.message) }) },
+    'r-off': function (el) { DB.updateDevice(el.dataset.id, { status: 'off' }).then(function () { bootRemote(); toast('已下架') }).catch(function (e) { toast(e.message) }) },
+    'r-del': function (el) {
+      var id = el.dataset.id
+      showDialog('删除设备', '删除后客户就看不到了，确定删除吗？', function () {
+        DB.deleteDevice(id).then(function () { bootRemote(); toast('已删除') }).catch(function (e) { toast(e.message) })
+      }, '确认删除')
+    },
+    'r-edit': function (el) { go('publish?edit=D' + el.dataset.id) },
+    'lead-done': function (el) {
+      DB.markLead(el.dataset.id, true).then(function () {
+        return DB.listLeads().then(function (rows) { state.leads = rows || []; render() })
+      }).catch(function (e) { toast(e.message) })
+    },
+    'del-sell-img': function (el) {
+      var i = Number(el.dataset.i)
+      state.sellForm.images.splice(i, 1)
+      if (state.sellForm.files) state.sellForm.files.splice(i, 1)
+      render()
+    },
+    'upload-sell': function () {
+      var inp = document.createElement('input')
+      inp.type = 'file'
+      inp.accept = 'image/*'
+      inp.multiple = true
+      inp.addEventListener('change', function () {
+        var files = Array.prototype.slice.call(inp.files || []).slice(0, 4 - state.sellForm.images.length)
+        var done = 0
+        files.forEach(function (fl) {
+          var fr = new FileReader()
+          fr.onload = function () {
+            state.sellForm.images.push(fr.result)
+            state.sellForm.files.push(fl)
+            if (++done === files.length) render()
+          }
+          fr.readAsDataURL(fl)
+        })
+      })
+      inp.click()
+    },
+    'submit-lead': function () {
+      var f = state.sellForm
+      if (!f.title.trim()) return toast('请填写设备名称')
+      if (!f.contact.trim()) return toast('请填写您的称呼')
+      if (!/^1\d{10}$/.test(f.phone.trim())) return toast('请填写正确的手机号')
+      var text = '【我要卖机】\n设备：' + f.title + '\n品牌型号：' + (f.brand || '-') +
+        '\n成色：' + (f.condition || '-') + '\n期望价格：' + (f.price ? f.price + ' 万' : '面议') +
+        '\n城市：' + (f.city || '-') + '\n联系人：' + f.contact + ' ' + f.phone +
+        (f.note ? '\n备注：' + f.note : '')
+      if (DB.ready) {
+        var jobs = (f.files || []).map(function (file) { return DB.uploadImage(file) })
+        toast('正在提交…')
+        Promise.all(jobs).then(function (urls) {
+          return DB.createLead({
+            title: f.title.trim(),
+            brand: f.brand,
+            condition: f.condition,
+            price: f.price ? Math.round(Number(f.price) * 10000) : null,
+            city: f.city,
+            contact: f.contact.trim(),
+            phone: f.phone.trim(),
+            note: f.note,
+            images: urls
+          })
+        }).then(function () {
+          state.sellForm = null
+          showLead('提交成功', text, '已同步给牙翼，24 小时内联系你。也可以加微信 ' + CONTACT.wechat + ' 直接沟通',
+            function () { location.hash = '#/home' })
+        }).catch(function (e) { toast(e.message || '提交失败') })
+      } else {
+        showLead('把你的设备发给牙翼', text, '复制这段信息，加微信 ' + CONTACT.wechat + ' 发送给客服')
+      }
+    },
     'copy-link': function () {
       var url = location.href.split('#')[0]
       copyText(url).then(function () { toast('链接已复制，去微信粘贴发送') })
@@ -1642,6 +2050,13 @@
     return
   }
   render()
+  if (DB.ready) {
+    bootRemote()
+    if (DB.logged) {
+      state.ownerLogged = true
+      DB.listLeads().then(function (rows) { state.leads = rows || []; render() }).catch(function () {})
+    }
+  }
 
   window.__demoReady = true
   window.__demoState = state

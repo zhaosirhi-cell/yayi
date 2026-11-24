@@ -11,3 +11,8 @@ Thumbs.db
 zhaopin.html
 引流推广专员-岗位定义与工作要求.md
 引流推广专员-招聘页面.html
+
+# 本地模拟后端产生的数据
+tools/.mock-db.json
+tools/.mock-uploads/
+demo/index-cloud.html
